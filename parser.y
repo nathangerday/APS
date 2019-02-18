@@ -72,6 +72,21 @@ types:
 
 expr: 
     TRUE { $$ = new AstTrue(); }
+    |   FALSE { $$ = new AstFalse();}
+    |   NUM { $$ = new AstNum($1);}
+    |   IDENT {$$ = new AstIdent($1);}
+    |   LPAR NOT exprs RPAR { $$ = new AstPrim(Op.NOT, (Ast)$3);}
+    |   LPAR AND exprs RPAR { $$ = new AstPrim(Op.AND ,(Ast)$3);}
+    |   LPAR OR exprs RPAR { $$ = new AstPrim(Op.OR ,(Ast)$3);}
+    |   LPAR EQ exprs RPAR { $$ = new AstPrim(Op.EQ ,(Ast)$3);}
+    |   LPAR LT exprs RPAR { $$ = new AstPrim(Op.LT ,(Ast)$3);}
+    |   LPAR ADD exprs RPAR { $$ = new AstPrim(Op.ADD ,(Ast)$3);}
+    |   LPAR SUB exprs RPAR { $$ = new AstPrim(Op.SUB ,(Ast)$3);}
+    |   LPAR MUL exprs RPAR { $$ = new AstPrim(Op.MUL ,(Ast)$3);}
+    |   LPAR DIV exprs RPAR { $$ = new AstPrim(Op.DIV ,(Ast)$3);}
+    |   LBRA args RBRA expr { $$ = new AstBlock((Ast)$2, (Ast)$4);}
+    |   LPAR expr exprs RPAR { $$ = new AstInvoc((Ast)$2, (Ast)$3);}
+    |   LPAR IF expr expr expr RPAR { $$ = new AstIf((Ast)$3, (Ast)$4, (Ast)$5);}
 ;
 
 exprs:
