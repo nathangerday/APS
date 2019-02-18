@@ -53,6 +53,8 @@ sep = [\n | \t | ' ']
 "or" {return Parser.OR;}
 "eq" {return Parser.EQ;}
 "lt" {return Parser.LT;}
+"if" {return Parser.IF;}
+
 
 /* newline */
 {sep} { } //{ return Parser.NL; } //TODO Do anything here ?

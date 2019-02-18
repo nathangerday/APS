@@ -9,28 +9,74 @@ import java.io.*;
 %token LPAR RPAR /* parethesis */
 %token LBRA RBRA /* brackets */
 %token COLON SEMICOLON STAR ARROW COMMA /* Symbols */
-%token CONST FUN REC ECHO INT BOOL TRUE FALSE NOT AND OR EQ LT /* Keywords */
+%token CONST FUN REC ECHO INT BOOL TRUE FALSE NOT AND OR EQ LT IF /* Keywords */
 
 %left MINUS PLUS
 %left TIMES DIV
 %left NEG /* negation--unary minus */
 
-%type <obj> line
-%type <obj> exp
+%type <obj> exprs
+%type <obj> expr
+%type <obj> type
+%type <obj> types
+%type <obj> arg
+%type <obj> args
+%type <obj> stat
+%type <obj> dec
+%type <obj> cmds
+%type <obj> prog
 
-
-%start line
+%start prog
 
 %%
-line: exp { prog=(Ast)$1; $$=$1; }
 
-exp:
-NUM { $$ = new AstNum($1); }
-| IDENT { $$ = new AstId($1); }
-| LPAR PLUS exp exp RPAR { $$ = new AstPrim(Op.ADD,(Ast)$3,(Ast)$4); }
-| LPAR MINUS exp exp RPAR { $$ = new AstPrim(Op.SUB,(Ast)$3,(Ast)$4); }
-| LPAR TIMES exp exp RPAR { $$ = new AstPrim(Op.MUL,(Ast)$3,(Ast)$4); }
-| LPAR DIV exp exp RPAR { $$ = new AstPrim(Op.DIV,(Ast)$3,(Ast)$4); }
+prog:
+    LBRA cmds RBRA { prog=(Ast)$2; $$=(Ast)$2; }
+;
+
+cmds:
+    stat { $$ = $1; }
+    | dec SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (Ast)$3);}
+    | stat SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (Ast)$3);}
+;
+dec:
+    CONST IDENT type expr { $$ = new AstConst($2, (Ast)$3, (Ast)$4);}
+    |   FUN IDENT type LBRA args RBRA expr { $$ = new AstFun($2, (Ast)$3, (Ast)$5, (Ast)$7);}
+    |   FUN REC IDENT type LBRA args RBRA expr { $$ = new AstFunRec($3, (Ast)$4, (Ast)$6, (Ast)$8);}
+;
+
+stat: 
+    ECHO expr { $$ = new AstEcho((Ast)$2); }
+;
+
+
+arg:
+    IDENT COLON type { $$ = new AstArg($1, (Ast)$3);}
+;
+
+args:
+    arg { $$ = $1 ;}
+    | arg COMMA args {$$ = new AstArgs((Ast)$1, (Ast)$3); }
+;
+
+type:
+    INT { $$ = new AstType(Type.INT); }
+    | BOOL { $$ = new AstType(Type.BOOL); }
+    | LPAR types ARROW type RPAR { $$ = new AstArrow((Ast)$2, (Ast)$4); }
+;
+
+types:
+    type { $$ = $1 ;}
+    | type STAR types { $$ = new AstStar((Ast)$1, (Ast)$3); }
+;
+
+expr: 
+    TRUE { $$ = new AstTrue(); }
+;
+
+exprs:
+    expr { $$ = new AstExpr((Ast)$1); }
+    | expr exprs { $$ = new AstExprs((Ast)$1, (Ast)$2);}
 ;
 %%
 
