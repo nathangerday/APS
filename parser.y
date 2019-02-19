@@ -5,7 +5,7 @@ import java.io.*;
 %token NL /* newline */
 %token <ival> NUM /* a number */
 %token <sval> IDENT /* an identifier */
-%token PLUS MINUS TIMES DIV /* operators */
+%token ADD SUB MUL DIV /* operators */
 %token LPAR RPAR /* parethesis */
 %token LBRA RBRA /* brackets */
 %token COLON SEMICOLON STAR ARROW COMMA /* Symbols */

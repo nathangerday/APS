@@ -1,7 +1,7 @@
-public class AstId implements Ast {
+public class AstIdent implements Ast {
     String name;
 
-    AstId(String x) {
+    AstIdent(String x) {
         name = x;
     }
 

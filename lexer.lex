@@ -18,9 +18,9 @@ sep = [\n | \t | ' ']
 %%
 
 /* operators */
-"add" { return Parser.PLUS; }
-"sub" { return Parser.MINUS; }
-"mul" { return Parser.TIMES; }
+"add" { return Parser.ADD; }
+"sub" { return Parser.SUB; }
+"mul" { return Parser.MUL; }
 "div" { return Parser.DIV; }
 
 /* parenthesis */
