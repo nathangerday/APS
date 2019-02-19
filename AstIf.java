@@ -10,6 +10,6 @@ public class AstIf implements Ast {
     }
 
     public String toPrologString() {
-        return "If(" + cond.toPrologString() + "," + then.toPrologString() + "," + e.toPrologString() + ")";
+        return "if(" + cond.toPrologString() + "," + then.toPrologString() + "," + e.toPrologString() + ")";
     }
 }

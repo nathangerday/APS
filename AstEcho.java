@@ -6,7 +6,7 @@ public class AstEcho implements Ast{
     }
 
     public String toPrologString(){
-        return "Echo("+expr.toPrologString()+")";
+        return "echo("+expr.toPrologString()+")";
     }
     
 }

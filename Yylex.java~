@@ -700,7 +700,7 @@ class Yylex {
             // fall through
           case 50: break;
           case 19: 
-            { return Parser.PLUS;
+            { return Parser.ADD;
             } 
             // fall through
           case 51: break;
@@ -715,12 +715,12 @@ class Yylex {
             // fall through
           case 53: break;
           case 22: 
-            { return Parser.MINUS;
+            { return Parser.SUB;
             } 
             // fall through
           case 54: break;
           case 23: 
-            { return Parser.TIMES;
+            { return Parser.MUL;
             } 
             // fall through
           case 55: break;

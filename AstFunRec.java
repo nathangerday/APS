@@ -13,6 +13,6 @@ public class AstFunRec implements Ast {
     }
 
     public String toPrologString() {
-        return "FunRec("+name+","+ type.toPrologString()+","+ args.toPrologString() +"," + expr.toPrologString() +")";
+        return "funrec("+name+","+ type.toPrologString()+","+ args.toPrologString() +"," + expr.toPrologString() +")";
     }
 }

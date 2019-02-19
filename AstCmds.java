@@ -8,7 +8,7 @@ public class AstCmds implements Ast{
     }
 
     public String toPrologString(){
-        return "Cmds(" + a1.toPrologString() + "," + a2.toPrologString() + ")";
+        return "cmds(" + a1.toPrologString() + "," + a2.toPrologString() + ")";
     }
 
 }

@@ -8,6 +8,6 @@ public class AstInvoc implements Ast {
     }
 
     public String toPrologString() {
-        return "Invoc(" + f.toPrologString() + "," + args.toPrologString() + ")";
+        return "invoc(" + f.toPrologString() + "," + args.toPrologString() + ")";
     }
 }

@@ -11,6 +11,6 @@ public class AstConst implements Ast {
     }
 
     public String toPrologString() {
-        return "Const("+name+","+ type.toPrologString()+"," + expr.toPrologString() +")";
+        return "const("+name+","+ type.toPrologString()+"," + expr.toPrologString() +")";
     }
 }

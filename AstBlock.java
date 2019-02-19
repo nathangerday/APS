@@ -8,6 +8,6 @@ public class AstBlock implements Ast {
     }
 
     public String toPrologString() {
-        return "Block(" + args.toPrologString() + "," + expr.toPrologString() + ")";
+        return "block(" + args.toPrologString() + "," + expr.toPrologString() + ")";
     }
 }
