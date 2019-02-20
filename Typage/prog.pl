@@ -4,68 +4,70 @@ typeExpr(_, false, bool).
 typeExpr(_, X, int) :- integer(X).
 typeExpr(_, X, ident) :- string(X).
 
-typeExpr(_, not(X), bool) :- 
+typeExpr(G, not(X), bool) :- 
+    assoc(X, G, R),
+    print(R),
+    typeExpr(_, R, bool).
+
+typeExpr(_, not(X), bool) :-
     typeExpr(_, X, bool).
 
+typeExpr(G, and(X, Y), bool) :-
+    typeExpr(G, X, bool),
+    typeExpr(G, Y, bool).
 
-typeExpr(_, and(X, Y), bool) :-
-    typeExpr(_, X, bool),
-    typeExpr(_, Y, bool).
+typeExpr(G, and(X, Y), bool) :-
+    typeExpr(G, X, bool),
+    typeExpr(G, Y, bool).
 
-typeExpr(_, and(X, Y), bool) :-
-    typeExpr(_, X, bool),
-    typeExpr(_, Y, bool).
+typeExpr(G, or(X, Y), bool) :-
+    typeExpr(G, X, bool),
+    typeExpr(G, Y, bool).
 
-typeExpr(_, or(X, Y), bool) :-
-    typeExpr(_, X, bool),
-    typeExpr(_, Y, bool).
+typeExpr(G, eq(X,Y), bool) :-
+    typeExpr(G, X, int),
+    typeExpr(G, Y, int).    
 
-typeExpr(_, eq(X,Y), bool) :-
-    typeExpr(_, X, int),
-    typeExpr(_, Y, int).    
+typeExpr(G, lt(X, Y), bool) :-
+    typeExpr(G, X, int),
+    typeExpr(G, Y, int).    
 
-typeExpr(_, lt(X, Y), bool) :-
-    typeExpr(_, X, int),
-    typeExpr(_, Y, int).    
+typeExpr(G,  add(X,Y), int) :-
+    typeExpr(G, X, int),
+    typeExpr(G, Y, int).    
 
-typeExpr(_,  add(X,Y), int) :-
-    typeExpr(_, X, int),
-    typeExpr(_, Y, int).    
+typeExpr(G,  sub(X,Y), int) :-
+    typeExpr(G, X, int),
+    typeExpr(G, Y, int).    
 
-typeExpr(_,  sub(X,Y), int) :-
-    typeExpr(_, X, int),
-    typeExpr(_, Y, int).    
+typeExpr(G,  mul(X,Y), int) :-
+    typeExpr(G, X, int),
+    typeExpr(G, Y, int).    
 
-typeExpr(_,  mul(X,Y), int) :-
-    typeExpr(_, X, int),
-    typeExpr(_, Y, int).    
+typeExpr(G,  div(X,Y), int) :-
+    typeExpr(G, X, int),
+    typeExpr(G, Y, int).    
 
-typeExpr(_,  div(X,Y), int) :-
-    typeExpr(_, X, int),
-    typeExpr(_, Y, int).    
+typeExpr(G, if(X,Y,Z), T) :-
+    typeExpr(G, X, bool),
+    typeExpr(G, Y, T),
+    typeExpr(G, Z, T).
 
-typeExpr(_, if(X,Y,Z), T) :-
-    typeExpr(_, X, bool),
-    typeExpr(_, Y, T),
-    typeExpr(_, Z, T).
-
-typeExpr(_, block(_, Y), _) :-
+typeExpr(G, block(A, Y), _) :-
     % //TODO Mettre args dans contexe
-    typeExprs(_, Y, _).
+    typeExprs(G, Y, _).
 
-typeExpr(_, invoc(X, Y), _) :-
-    typeExpr(_, X, ident),
-    typeExprs(_, Y, _).
+typeExpr(G, invoc(X, Y), _) :-
+    typeExpr(G, X, ident),
+    typeExprs(G, Y, _).
 
-typeExprs(_, exprs(X, Y), _) :-
-    typeExpr(_, X, _),
-    typeExprs(_, Y, _).
+typeExprs(G, exprs(X, Y), _) :-
+    typeExpr(G, X, _),
+    typeExprs(G, Y, _).
 
-typeExprs(_, exprs(X, Y), _) :-
-    typeExpr(_, X,_ ),
-    typeExpr(_, Y,_ ).
-
-
+typeExprs(G, exprs(X, Y), _) :-
+    typeExpr(G, X,_ ),
+    typeExpr(G, Y,_ ).
 
 
 main_stdin :-
@@ -75,8 +77,12 @@ main_stdin :-
     nl. 
 
 
+assoc(X, [(X, V)|_], V).
+assoc(X, [_|XS], V) :-
+    assoc(X, XS, V).
 
-
+add([], (X,Y), (X,Y)).
+add([L], (X,Y), [(X,Y) | L]).
 
 
 
@@ -93,5 +99,5 @@ main_stdin :-
 % lt(X,Y) :- int(X), int(Y).
 % add(X, Y) :- integer(X), integer(Y).
 % sub(X, Y) :- integer(X), integer(Y).
-% mul(X, Y) :- integer(X), integer(Y).
+% mul(X,int)], ("b",bool), X)., Y) :- integer(X), integer(Y).
 % div(X, Y) :- integer(X), integer(Y).
