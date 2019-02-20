@@ -1,5 +1,5 @@
 LEX_J = jflex/bin/jflex
-YACC_J = ./byacc -J 
+YACC_J = byacc/byacc -J 
 JAVAC = javac
 
 toProlog: parser Op.java ToProlog.java

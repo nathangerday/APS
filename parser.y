@@ -26,7 +26,7 @@ import java.io.*;
 %type <obj> cmds
 %type <obj> prog
 
-%start args
+%start prog
 
 %%
 
@@ -55,7 +55,8 @@ arg:
 ;
 
 args:
-    arg {$$ = new AstArgs((Ast)$1);}
+    // arg {$$ = new AstArgs((Ast)$1);}
+    arg {$$ = $1;}
     | arg COMMA args { $$ = new AstArgs((Ast)$1, (Ast)$3);}
 ;
 

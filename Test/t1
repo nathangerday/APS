@@ -1,0 +1,4 @@
+[
+        CONST name bool (and true true); 
+        ECHO false
+]
