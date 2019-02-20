@@ -108,6 +108,10 @@ add([], (X,Y), [(X,Y)]).
 add([L], (X,Y), [(X,Y) | L]).
 
 
+ last(X, [X]).
+ last(X, [_|Z]) :-
+    last(X, Z).
+
 
 
 % not(X) :- bool(X).
