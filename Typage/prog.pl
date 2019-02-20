@@ -2,19 +2,19 @@ typeExpr(_, true, bool).
 typeExpr(_, false, bool).
 
 typeExpr(_, X, int) :- integer(X).
-typeExpr(_, X, ident) :- string(X).
+typeExpr(G, X, T) :- assoc(X, G, T).
 
-typeExpr(G, not(X), bool) :- 
-    assoc(X, G, R),
-    print(R),
-    typeExpr(_, R, bool).
+%% EXAMPLE TO USE exprs IN PRIM
+% typeExpr(G, not(exprs(X)), bool) :-
+%     typeExpr(G, X, bool).
 
-typeExpr(_, not(X), bool) :-
-    typeExpr(_, X, bool).
+% typeExpr(G, and(exprs(X, Y)), bool) :-
+%     typeExpr(G, X, bool),
+%     typeExpr(G, Y, bool).
 
-typeExpr(G, and(X, Y), bool) :-
-    typeExpr(G, X, bool),
-    typeExpr(G, Y, bool).
+
+typeExpr(G, not(X), bool) :-
+    typeExpr(G, X, bool).
 
 typeExpr(G, and(X, Y), bool) :-
     typeExpr(G, X, bool),
@@ -24,7 +24,7 @@ typeExpr(G, or(X, Y), bool) :-
     typeExpr(G, X, bool),
     typeExpr(G, Y, bool).
 
-typeExpr(G, eq(X,Y), bool) :-
+typeExpr(G, eq(X, Y), bool) :-
     typeExpr(G, X, int),
     typeExpr(G, Y, int).    
 
@@ -32,35 +32,37 @@ typeExpr(G, lt(X, Y), bool) :-
     typeExpr(G, X, int),
     typeExpr(G, Y, int).    
 
-typeExpr(G,  add(X,Y), int) :-
+typeExpr(G, add(X, Y), int) :-
     typeExpr(G, X, int),
     typeExpr(G, Y, int).    
 
-typeExpr(G,  sub(X,Y), int) :-
+typeExpr(G, sub(X, Y), int) :-
     typeExpr(G, X, int),
     typeExpr(G, Y, int).    
 
-typeExpr(G,  mul(X,Y), int) :-
+typeExpr(G, mul(X, Y), int) :-
     typeExpr(G, X, int),
     typeExpr(G, Y, int).    
 
-typeExpr(G,  div(X,Y), int) :-
+typeExpr(G, div(X,Y), int) :-
     typeExpr(G, X, int),
     typeExpr(G, Y, int).    
 
-typeExpr(G, if(X,Y,Z), T) :-
+typeExpr(G, if(X, Y, Z), T) :-
     typeExpr(G, X, bool),
     typeExpr(G, Y, T),
     typeExpr(G, Z, T).
 
+
+% //TODO Uniquement le contexte defini dans [...]e ou aussi le contexte general ?
+% //TODO Comment retourner le type "t1 * . . . * tn -> t" en Prolog ?
 typeExpr(G, block(A, Y), _) :-
-    % //TODO Mettre args dans contexe
     typeArgs(G, A, NG),
     typeExprs(NG, Y, _).
 
-typeExpr(G, invoc(X, Y), _) :-
-    typeExpr(G, X, ident),
-    typeExprs(G, Y, _).
+typeExpr(G, invoc(X, Y), R) :-
+    typeExprs(G, Y, [T | R]),
+    typeExpr(G, X, T).
 
 typeExprs(G, exprs(X, Y), _) :-
     typeExpr(G, X, _),
@@ -70,18 +72,25 @@ typeExprs(G, exprs(X, Y), _) :-
     typeExpr(G, X,_ ),
     typeExpr(G, Y,_ ).
 
-%% //TODO Not working + need verif indent and type of each arg in typeArg
-typeArgs(G, args(A, As), NNG):-
-    typeArg(G, A, NG),
-    typeArgs(NG, As, NNG).
-
 typeArgs(G, args(A, B), NNG) :-
     typeArg(G, A, NG),
     typeArg(NG, B, NNG).
 
+typeArgs(G, args(A, As), NNG):-
+    typeArg(G, A, NG),
+    typeArgs(NG, As, NNG).
 
 typeArg(G, arg(X, Y), NG) :-
+    typeExpr(_, X, ident),
+    typeType(Y),
     add(G,  (X, Y), NG).
+
+typeType(X) :-
+    X = bool.
+
+typeType(X) :-
+    X = int.
+
 
 
 main_stdin :-
@@ -95,7 +104,7 @@ assoc(X, [(X, V)|_], V).
 assoc(X, [_|XS], V) :-
     assoc(X, XS, V).
 
-add([], (X,Y), (X,Y)).
+add([], (X,Y), [(X,Y)]).
 add([L], (X,Y), [(X,Y) | L]).
 
 
