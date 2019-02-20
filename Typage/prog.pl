@@ -55,7 +55,8 @@ typeExpr(G, if(X,Y,Z), T) :-
 
 typeExpr(G, block(A, Y), _) :-
     % //TODO Mettre args dans contexe
-    typeExprs(G, Y, _).
+    typeArgs(G, A, NG),
+    typeExprs(NG, Y, _).
 
 typeExpr(G, invoc(X, Y), _) :-
     typeExpr(G, X, ident),
@@ -68,6 +69,19 @@ typeExprs(G, exprs(X, Y), _) :-
 typeExprs(G, exprs(X, Y), _) :-
     typeExpr(G, X,_ ),
     typeExpr(G, Y,_ ).
+
+%% //TODO Not working + need verif indent and type of each arg in typeArg
+typeArgs(G, args(A, As), NNG):-
+    typeArg(G, A, NG),
+    typeArgs(NG, As, NNG).
+
+typeArgs(G, args(A, B), NNG) :-
+    typeArg(G, A, NG),
+    typeArg(NG, B, NNG).
+
+
+typeArg(G, arg(X, Y), NG) :-
+    add(G,  (X, Y), NG).
 
 
 main_stdin :-
