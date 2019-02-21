@@ -2,7 +2,7 @@ typeExpr(_, true, bool).
 typeExpr(_, false, bool).
 
 typeExpr(_, X, int) :- integer(X).
-typeExpr(G, X, T) :- assoc(X, G, T).
+typeExpr(G, X, T) :- string(X), assoc(X, G, T).
 
 %% EXAMPLE TO USE exprs IN PRIM
 % typeExpr(G, not(exprs(X)), bool) :-
@@ -56,21 +56,29 @@ typeExpr(G, if(X, Y, Z), T) :-
 
 % //TODO Uniquement le contexte defini dans [...]e ou aussi le contexte general ?
 % //TODO Comment retourner le type "t1 * . . . * tn -> t" en Prolog ?
-typeExpr(G, block(A, Y), _) :-
-    typeArgs(G, A, NG),
-    typeExprs(NG, Y, _).
+typeExpr(G, block(A, Y), [TS | [T]]) :-
+    typeArgs([], A, NG), % Cree le nouveau contexte en fonction des args
+    extract_types(NG, TS), % Extraie les différents types des args pour le obtenir le type de retour
+    append(NG, G, NNG), % Ajout du contexte courant au contexte des args 
+    typeExpr(NNG, Y, T).
 
-typeExpr(G, invoc(X, Y), R) :-
-    typeExprs(G, Y, [T | R]),
+typeExpr(G, invoc(X, Y), S) :-
+    typeExprs(G, Y, TE),
+    typeExpr(G, X, [T | S]),
+    compare(=, T, TE).
+
+
+% Expressions me renvoies le types t1 * ... * tn des expr
+typeExprs(G, exprs(X, Y), [T | TE]) :-
+    typeExpr(G, X, T),
+    typeExprs(G, Y, TE).
+
+typeExprs(G, exprs(X, Y), [T | [T2]]) :-
+    typeExpr(G, X, T),
+    typeExpr(G, Y, T2).
+
+typeExprs(G, exprs(X), [T]) :-
     typeExpr(G, X, T).
-
-typeExprs(G, exprs(X, Y), _) :-
-    typeExpr(G, X, _),
-    typeExprs(G, Y, _).
-
-typeExprs(G, exprs(X, Y), _) :-
-    typeExpr(G, X,_ ),
-    typeExpr(G, Y,_ ).
 
 typeArgs(G, args(A, B), NNG) :-
     typeArg(G, A, NG),
@@ -81,9 +89,10 @@ typeArgs(G, args(A, As), NNG):-
     typeArgs(NG, As, NNG).
 
 typeArg(G, arg(X, Y), NG) :-
-    typeExpr(_, X, ident),
+    string(X), 
     typeType(Y),
-    add(G,  (X, Y), NG).
+    convertTypeToProlog(Y, NY),
+    add(G,  (X, NY), NG).
 
 typeType(X) :-
     X = bool.
@@ -91,6 +100,16 @@ typeType(X) :-
 typeType(X) :-
     X = int.
 
+typeType(arrow(X, Y)) :-
+    typeTypes(X),
+    typeType(Y).
+
+typeTypes(X) :-
+    typeType(X).
+
+typeTypes(star(X, Y)) :-
+    typeType(X),
+    typeTypes(Y).
 
 
 main_stdin :-
@@ -99,21 +118,42 @@ main_stdin :-
     print(R),
     nl. 
 
+extract_types([(_, X)], [X]).
+
+extract_types([(_, X) | Y], [X | R]) :-
+    extract_types(Y, R).
+
 
 assoc(X, [(X, V)|_], V).
 assoc(X, [_|XS], V) :-
     assoc(X, XS, V).
 
 add([], (X,Y), [(X,Y)]).
-add([L], (X,Y), [(X,Y) | L]).
+add(L, (X,Y), [(X,Y) | L]).
 
-
- last(X, [X]).
- last(X, [_|Z]) :-
+last(X, [X]).
+last(X, [_|Z]) :-
     last(X, Z).
 
 
+% Exemple de conversion de type :
+% ?- convertTypeToProlog(arrow(star(int, star(bool, bool)), int), X).
+% X = [[int, bool, bool], int] 
 
+convertTypeToProlog(arrow(X, Y), [NX | [NY]]) :-
+    convertTypesToProlog(X, NX),
+    convertTypeToProlog(Y, NY).
+
+convertTypeToProlog(X, X).
+
+convertTypesToProlog(star(X, Y), [NX | NY]) :-
+    convertTypeToProlog(X, NX),
+    convertTypesToProlog(Y, NY).
+
+convertTypesToProlog(X, [R]) :-
+    convertTypeToProlog(X, R).
+
+% test(X, Y, [X | [Y]]).
 % not(X) :- bool(X).
 
 % bool(_,true,bool).
@@ -128,3 +168,4 @@ add([L], (X,Y), [(X,Y) | L]).
 % sub(X, Y) :- integer(X), integer(Y).
 % mul(X,int)], ("b",bool), X)., Y) :- integer(X), integer(Y).
 % div(X, Y) :- integer(X), integer(Y).
+
