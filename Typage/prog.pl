@@ -4,58 +4,26 @@ typeExpr(_, false, bool).
 typeExpr(_, X, int) :- integer(X).
 typeExpr(G, X, T) :- string(X), assoc(X, G, T).
 
-%% EXAMPLE TO USE exprs IN PRIM
-% typeExpr(G, not(exprs(X)), bool) :-
-%     typeExpr(G, X, bool).
+typeExpr(G, not(X), bool) :- typeExpr(G, X, bool).
 
-% typeExpr(G, and(exprs(X, Y)), bool) :-
-%     typeExpr(G, X, bool),
-%     typeExpr(G, Y, bool).
+typeExpr(G, and(X, Y), bool) :- typeExpr(G, X, bool), typeExpr(G, Y, bool).
 
+typeExpr(G, or(X, Y), bool) :- typeExpr(G, X, bool), typeExpr(G, Y, bool).
 
-typeExpr(G, not(X), bool) :-
-    typeExpr(G, X, bool).
+typeExpr(G, eq(X, Y), bool) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, and(X, Y), bool) :-
-    typeExpr(G, X, bool),
-    typeExpr(G, Y, bool).
+typeExpr(G, lt(X, Y), bool) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, or(X, Y), bool) :-
-    typeExpr(G, X, bool),
-    typeExpr(G, Y, bool).
+typeExpr(G, add(X, Y), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, eq(X, Y), bool) :-
-    typeExpr(G, X, int),
-    typeExpr(G, Y, int).    
+typeExpr(G, sub(X, Y), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, lt(X, Y), bool) :-
-    typeExpr(G, X, int),
-    typeExpr(G, Y, int).    
+typeExpr(G, mul(X, Y), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, add(X, Y), int) :-
-    typeExpr(G, X, int),
-    typeExpr(G, Y, int).    
+typeExpr(G, div(X,Y), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, sub(X, Y), int) :-
-    typeExpr(G, X, int),
-    typeExpr(G, Y, int).    
+typeExpr(G, if(X, Y, Z), T) :- typeExpr(G, X, bool), typeExpr(G, Y, T), typeExpr(G, Z, T).
 
-typeExpr(G, mul(X, Y), int) :-
-    typeExpr(G, X, int),
-    typeExpr(G, Y, int).    
-
-typeExpr(G, div(X,Y), int) :-
-    typeExpr(G, X, int),
-    typeExpr(G, Y, int).    
-
-typeExpr(G, if(X, Y, Z), T) :-
-    typeExpr(G, X, bool),
-    typeExpr(G, Y, T),
-    typeExpr(G, Z, T).
-
-
-% //TODO Uniquement le contexte defini dans [...]e ou aussi le contexte general ?
-% //TODO Comment retourner le type "t1 * . . . * tn -> t" en Prolog ?
 typeExpr(G, block(A, Y), [TS | [T]]) :-
     typeArgs([], A, NG), % Cree le nouveau contexte en fonction des args
     extract_types(NG, TS), % Extraie les différents types des args pour le obtenir le type de retour
@@ -68,7 +36,9 @@ typeExpr(G, invoc(X, Y), S) :-
     compare(=, T, TE).
 
 
-% Expressions me renvoies le types t1 * ... * tn des expr
+
+
+
 typeExprs(G, exprs(X, Y), [T | TE]) :-
     typeExpr(G, X, T),
     typeExprs(G, Y, TE).
@@ -79,6 +49,9 @@ typeExprs(G, exprs(X, Y), [T | [T2]]) :-
 
 typeExprs(G, exprs(X), [T]) :-
     typeExpr(G, X, T).
+
+
+
 
 typeArgs(G, args(A, B), NNG) :-
     typeArg(G, A, NG),
@@ -93,6 +66,9 @@ typeArg(G, arg(X, Y), NG) :-
     typeType(Y),
     convertTypeToProlog(Y, NY),
     add(G,  (X, NY), NG).
+
+
+
 
 typeType(X) :-
     X = bool.
@@ -111,6 +87,9 @@ typeTypes(star(X, Y)) :-
     typeType(X),
     typeTypes(Y).
 
+
+
+% ============= UTILS ============= %
 
 main_stdin :-
     read(user_input, T),
@@ -181,4 +160,15 @@ convertTypesToProlog(X, [R]) :-
 % X = [("val3", bool),  ("val", int),  ("name", [[int, bool], bool])] 
 
 % ?- typeExpr([], block(args(arg("a", int), args(arg("b", bool), arg("c", int))), div(2,3)), X).
-% X = [[int, bool, int], int] 
+% X = [[int, bool, int], int]
+
+% ?- typeExprs([], exprs(add(1,2), exprs(and(true, false), exprs(div(4, 2), exprs(if(true, not(false), and(true, false)), lt(2,4))))), X).
+% X = [int, bool, int, bool, bool] 
+
+%% EXAMPLE TO USE exprs IN PRIM
+% typeExpr(G, not(exprs(X)), bool) :-
+%     typeExpr(G, X, bool).
+% typeExpr(G, and(exprs(X, Y)), bool) :-
+%     typeExpr(G, X, bool),
+%     typeExpr(G, Y, bool).
+
