@@ -169,3 +169,16 @@ convertTypesToProlog(X, [R]) :-
 % mul(X,int)], ("b",bool), X)., Y) :- integer(X), integer(Y).
 % div(X, Y) :- integer(X), integer(Y).
 
+
+% ================================
+% Exemples
+% ================================
+
+% ?- typeExpr([("f", [[bool, int, int], bool])], invoc("f", exprs(and(true,false), exprs(add(1,2), div(4,5)))), X).
+% X = [bool] .
+
+% ?- typeArgs([], args(arg("name",arrow(star(int, bool), bool)),args(arg("val",int), arg("val3",bool))), X).
+% X = [("val3", bool),  ("val", int),  ("name", [[int, bool], bool])] 
+
+% ?- typeExpr([], block(args(arg("a", int), args(arg("b", bool), arg("c", int))), div(2,3)), X).
+% X = [[int, bool, int], int] 
