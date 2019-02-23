@@ -72,8 +72,6 @@ typeArg(G, arg(X, Y), NG) :-
     add(G,  (X, NY), NG).
 
 
-
-
 typeType(X) :-
     X = bool.
 
@@ -158,7 +156,9 @@ extract_types([(_, X) | Y], [X | R]) :-
 
 
 assoc(X, [(X, V)|_], V).
-assoc(X, [_|XS], V) :-
+
+assoc(X, [(OX, _)|XS], V) :-
+    OX \= X, % Garantie de recuperer uniquement le premier element ayant le nom correspondant
     assoc(X, XS, V).
 
 add([], (X,Y), [(X,Y)]).
