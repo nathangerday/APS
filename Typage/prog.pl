@@ -32,7 +32,7 @@ typeExpr(G, block(A, Y), [TS | [T]]) :-
 
 typeExpr(G, invoc(X, Y), S) :-
     typeExprs(G, Y, TE),
-    typeExpr(G, X, [T | S]),
+    typeExpr(G, X, [T | [S]]),
     compare(=, T, TE).
 
 
@@ -88,6 +88,50 @@ typeTypes(star(X, Y)) :-
     typeTypes(Y).
 
 
+% INSTRUCTION
+
+typeInst(G, echo(X), void) :-
+    typeExpr(G, X, int).
+
+% Declaration
+
+typeDec(G, const(Name, Type, Expr), NG) :-
+    typeExpr(G, Expr, Type),
+    append([(Name, Type)], G, NG).
+
+typeDec(G, fun(Name, Type, Args, Expr), GP) :-
+    typeArgs([], Args, NG), % Cree le nouveau contexte en fonction des args
+    extract_types(NG, TS), % Extraie les différents types des args pour le obtenir le type de retour
+    append(NG, G, NNG), % Ajout du contexte courant au contexte des args 
+    typeExpr(NNG, Expr, Type),
+    append([(Name, [TS | [Type]])], G, GP).
+
+
+typeDec(G, funrec(Name, Type, Args, Expr), GP) :-
+    typeArgs([], Args, NG), % Cree le nouveau contexte en fonction des args
+    extract_types(NG, TS), % Extraie les différents types des args pour le obtenir le type de retour
+    append(NG, G, NNG), % Ajout du contexte courant au contexte des args
+    append([(Name, [TS | [Type]])], NNG, NNNG), % Ajout de la fonction actuellement définie dans le contexte pour verifier la recursion
+    typeExpr(NNNG, Expr, Type),
+    append([(Name, [TS | [Type]])], G, GP).
+
+
+% Commands
+
+typeCmds(G, cmds(D, Cs), void) :-
+    typeDec(G, D, NG),
+    typeCmds(NG, Cs, void).
+
+typeCmds(G, cmds(S, Cs), void) :-
+    typeInst(G, S, void),
+    typeCmds(G, Cs, void).
+
+typeCmds(_, cmds(), void).
+
+% Program
+
+typeProg(P, void) :-
+    typeCmds([], P, void).
 
 % ============= UTILS ============= %
 
@@ -165,6 +209,12 @@ convertTypesToProlog(X, [R]) :-
 % ?- typeExprs([], exprs(add(1,2), exprs(and(true, false), exprs(div(4, 2), exprs(if(true, not(false), and(true, false)), lt(2,4))))), X).
 % X = [int, bool, int, bool, bool] 
 
+% ?- typeDec([], fun("f", bool, args(arg("a", int), arg("b", int)), eq("a", "b")), T).
+% T = [("f", [[int, int], bool])] .
+
+% ?- typeDec([("a", int)], funrec("f", bool, args(arg("a", int), arg("b", int)), invoc("f", exprs("a", "b"))), G).
+% G = [("f", [[int, int], bool]),  ("a", int)] .
+
 %% EXAMPLE TO USE exprs IN PRIM
 % typeExpr(G, not(exprs(X)), bool) :-
 %     typeExpr(G, X, bool).
@@ -172,3 +222,7 @@ convertTypesToProlog(X, [R]) :-
 %     typeExpr(G, X, bool),
 %     typeExpr(G, Y, bool).
 
+
+toList(truc(A)) :-
+    print(A),
+    nl.
