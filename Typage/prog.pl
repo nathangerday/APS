@@ -100,24 +100,30 @@ typeInst(G, echo(X), void) :-
 % Declaration
 
 typeDec(G, const(Name, Type, Expr), NG) :-
-    typeExpr(G, Expr, Type),
-    append([(Name, Type)], G, NG).
+    typeType(Type),
+    convertTypeToProlog(Type, NType),
+    typeExpr(G, Expr, NType),
+    append([(Name, NType)], G, NG).
 
 typeDec(G, fun(Name, Type, Args, Expr), GP) :-
+    typeType(Type),
+    convertTypeToProlog(Type, NType),
     typeArgs([], Args, NG), % Cree le nouveau contexte en fonction des args
     extract_types(NG, TS), % Extraie les différents types des args pour le obtenir le type de retour
     append(NG, G, NNG), % Ajout du contexte courant au contexte des args 
-    typeExpr(NNG, Expr, Type),
-    append([(Name, [TS | [Type]])], G, GP).
+    typeExpr(NNG, Expr, NType),
+    append([(Name, [TS | [NType]])], G, GP).
 
 
 typeDec(G, funrec(Name, Type, Args, Expr), GP) :-
+    typeType(Type),
+    convertTypeToProlog(Type, NType),
     typeArgs([], Args, NG), % Cree le nouveau contexte en fonction des args
     extract_types(NG, TS), % Extraie les différents types des args pour le obtenir le type de retour
     append(NG, G, NNG), % Ajout du contexte courant au contexte des args
-    append([(Name, [TS | [Type]])], NNG, NNNG), % Ajout de la fonction actuellement définie dans le contexte pour verifier la recursion
+    append([(Name, [TS | [NType]])], NNG, NNNG), % Ajout de la fonction actuellement définie dans le contexte pour verifier la recursion
     typeExpr(NNNG, Expr, Type),
-    append([(Name, [TS | [Type]])], G, GP).
+    append([(Name, [TS | [NType]])], G, GP).
 
 
 % Commands
@@ -141,7 +147,7 @@ typeProg(P, void) :-
 
 main_stdin :-
     read(user_input, T),
-    typeExpr(_, T, R),
+    typeProg(T, R),
     print(R),
     nl. 
 
@@ -219,14 +225,13 @@ convertTypesToProlog(X, [R]) :-
 % ?- typeDec([("a", int)], funrec("f", bool, args(arg("a", int), arg("b", int)), invoc("f", exprs("a", "b"))), G).
 % G = [("f", [[int, int], bool]),  ("a", int)] .
 
+% ================= ONE LINER =================
+% java ToProlog < ../exemples_APS/prog005.aps | awk '{print $1"."}' | swipl -s Typage/prog.pl -g main_stdin
+% =============================================
+
 %% EXAMPLE TO USE exprs IN PRIM
 % typeExpr(G, not(exprs(X)), bool) :-
 %     typeExpr(G, X, bool).
 % typeExpr(G, and(exprs(X, Y)), bool) :-
 %     typeExpr(G, X, bool),
 %     typeExpr(G, Y, bool).
-
-
-toList(truc(A)) :-
-    print(A),
-    nl.
