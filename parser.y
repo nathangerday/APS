@@ -35,14 +35,14 @@ prog:
 ;
 
 cmds:
-    stat { $$ = $1; }
+    stat { $$ = new AstCmds((Ast)$1); }
     | dec SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (Ast)$3);}
     | stat SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (Ast)$3);}
 ;
 dec:
-    CONST IDENT type expr { $$ = new AstConst($2, (Ast)$3, (Ast)$4);}
-    |   FUN IDENT type LBRA args RBRA expr { $$ = new AstFun($2, (Ast)$3, (Ast)$5, (Ast)$7);}
-    |   FUN REC IDENT type LBRA args RBRA expr { $$ = new AstFunRec($3, (Ast)$4, (Ast)$6, (Ast)$8);}
+    CONST IDENT type expr { $$ = new AstConst(new AstIdent($2), (Ast)$3, (Ast)$4);}
+    |   FUN IDENT type LBRA args RBRA expr { $$ = new AstFun(new AstIdent($2), (Ast)$3, (Ast)$5, (Ast)$7);}
+    |   FUN REC IDENT type LBRA args RBRA expr { $$ = new AstFunRec(new AstIdent($3), (Ast)$4, (Ast)$6, (Ast)$8);}
 ;
 
 stat: 
@@ -51,12 +51,12 @@ stat:
 
 
 arg:
-    IDENT COLON type { $$ = new AstArg($1, (Ast)$3);}
+    IDENT COLON type { $$ = new AstArg(new AstIdent($1), (Ast)$3);}
 ;
 
 args:
     // arg {$$ = new AstArgs((Ast)$1);}
-    arg {$$ = $1;}
+    arg {$$ = new AstArgs((Ast)$1);}
     | arg COMMA args { $$ = new AstArgs((Ast)$1, (Ast)$3);}
 ;
 
@@ -91,7 +91,7 @@ expr:
 ;
 
 exprs:
-    expr { $$ = new AstExpr((Ast)$1); }
+    expr { $$ = new AstExprs((Ast)$1); }
     | expr exprs { $$ = new AstExprs((Ast)$1, (Ast)$2);}
 ;
 %%

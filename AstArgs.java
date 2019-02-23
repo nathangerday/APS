@@ -39,7 +39,16 @@ public class AstArgs implements Ast {
         this.args = args;
     }
 
+    AstArgs(Ast arg) {
+        this.arg = arg;
+        this.args = null;
+    }
+
     public String toPrologString() {
-        return "args("+arg.toPrologString()+","+ args.toPrologString()+")";
+        if(this.args != null){
+            return "args("+arg.toPrologString()+","+ args.toPrologString()+")";
+        }else{
+            return "args("+arg.toPrologString()+",args())";
+        }
     }
 }

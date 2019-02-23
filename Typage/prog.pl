@@ -43,23 +43,27 @@ typeExprs(G, exprs(X, Y), [T | TE]) :-
     typeExpr(G, X, T),
     typeExprs(G, Y, TE).
 
-typeExprs(G, exprs(X, Y), [T | [T2]]) :-
-    typeExpr(G, X, T),
-    typeExpr(G, Y, T2).
+typeExprs(_, exprs(), []).
 
-typeExprs(G, exprs(X), [T]) :-
-    typeExpr(G, X, T).
+% typeExprs(G, exprs(X, Y), [T | [T2]]) :-
+%     typeExpr(G, X, T),
+%     typeExpr(G, Y, T2).
+
+% typeExprs(G, exprs(X), [T]) :-
+%     typeExpr(G, X, T).
 
 
 
 
-typeArgs(G, args(A, B), NNG) :-
-    typeArg(G, A, NG),
-    typeArg(NG, B, NNG).
+% typeArgs(G, args(A, B), NNG) :-
+%     typeArg(G, A, NG),
+%     typeArg(NG, B, NNG).
 
 typeArgs(G, args(A, As), NNG):-
     typeArg(G, A, NG),
     typeArgs(NG, As, NNG).
+
+typeArgs(G, args(), G).
 
 typeArg(G, arg(X, Y), NG) :-
     string(X), 

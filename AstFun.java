@@ -1,11 +1,11 @@
 public class AstFun implements Ast {
     
-    String name;
+    Ast name;
     Ast type;
     Ast args;
     Ast expr;
 
-    AstFun(String name, Ast type, Ast args, Ast expr) {
+    AstFun(Ast name, Ast type, Ast args, Ast expr) {
         this.name = name;
         this.type = type;
         this.expr = expr;
@@ -13,6 +13,6 @@ public class AstFun implements Ast {
     }
 
     public String toPrologString() {
-        return "fun("+name+","+ type.toPrologString()+","+ args.toPrologString() +"," + expr.toPrologString() +")";
+        return "fun("+name.toPrologString()+","+ type.toPrologString()+","+ args.toPrologString() +"," + expr.toPrologString() +")";
     }
 }

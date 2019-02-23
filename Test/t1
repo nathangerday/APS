@@ -1,4 +1,4 @@
 [
         CONST name bool (and true true); 
-        ECHO false
+        ECHO 1
 ]

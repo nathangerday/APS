@@ -1,13 +1,13 @@
 public class AstArg implements Ast {
     Ast type;
-    String name;
+    Ast name;
 
-    AstArg(String name, Ast type) {
+    AstArg(Ast name, Ast type) {
         this.name = name;
         this.type = type;
     }
 
     public String toPrologString() {
-        return "arg("+name+","+ type.toPrologString()+")";
+        return "arg("+name.toPrologString()+","+ type.toPrologString()+")";
     }
 }

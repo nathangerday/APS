@@ -2,6 +2,6 @@
 [
         CONST name bool (and true true); 
         ECHO 12;
-        FUN test bool [n1:int,n2:int,n3:int,n4:int] false;
+        FUN test bool [n1:bool,n2:bool,n3:int,n4:int] (and n1 n2);
         ECHO 13
 ]

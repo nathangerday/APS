@@ -7,7 +7,16 @@ public class AstExprs implements Ast {
         this.exprs = exprs;
     }
 
+    AstExprs(Ast expr){
+        this.expr = expr;
+        this.exprs = null;
+    }
+
     public String toPrologString() {
-        return expr.toPrologString() + " " + exprs.toPrologString();
+        if(this.exprs != null){
+            return "exprs("+expr.toPrologString() + "," + exprs.toPrologString()+")";
+        }else{
+            return "exprs("+ expr.toPrologString() +",exprs())";
+        }
     }
 }
