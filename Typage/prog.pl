@@ -60,8 +60,8 @@ typeExprs(_, exprs(), []).
 %     typeArg(NG, B, NNG).
 
 typeArgs(G, args(A, As), NNG):-
-    typeArg(G, A, NG),
-    typeArgs(NG, As, NNG).
+    typeArgs(G, As, NG), % Commence par le reste des args pour avoir le bon ordre des arguements dans le contexte
+    typeArg(NG, A, NNG).
 
 typeArgs(G, args(), G).
 
