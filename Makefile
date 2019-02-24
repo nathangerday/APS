@@ -2,13 +2,17 @@ LEX_J = jflex/bin/jflex
 YACC_J = byacc/byacc -J 
 JAVAC = javac
 
-toProlog: parser Op.java ToProlog.java
-	$(JAVAC) ToProlog.java
+toProlog: parser Ast/Op.java Ast/Type.java ToProlog.java
+	$(JAVAC) ToProlog.java -d bin/ -sourcepath Ast/:bin/
 
 parser: parser.y lexer.lex
-	$(LEX_J) lexer.lex
-	$(YACC_J) parser.y
+	$(LEX_J) lexer.lex -d bin/
+	$(YACC_J) parser.y 
+	# How to generate file with byacc directly in bin ?
+	mv Parser.java bin/Parser.java 
+	mv ParserVal.java bin/ParserVal.java
 clean:
-	rm Parser*.java
-	rm Yylex.java
-	rm *.class
+	rm bin/Parser*.java
+	rm bin/Yylex.java
+	rm bin/*.class
+	rm bin/Yylex.java~
