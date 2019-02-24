@@ -1,0 +1,4 @@
+[
+  FUN incr int [a:int] (add a 1);
+  ECHO (incr 3)
+]

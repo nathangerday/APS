@@ -1,0 +1,4 @@
+[
+  FUN f (int * int -> int) [cond:bool] [a:int,b:int](if cond a b);
+  ECHO ((f true) 2 3)
+]

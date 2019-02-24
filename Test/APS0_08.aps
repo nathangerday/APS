@@ -1,0 +1,8 @@
+
+[
+        CONST val int (add (sub 3 (div 2 1)) (mul (add 3 4) 6));
+        ECHO 12;
+        FUN test int [n1:bool,n3:int,n4:int] (if n1 (add n3 n4) (sub n3 n4));
+        FUN REC testrec int [n:int] (if (lt 0 n) (test true 3 (testrec (sub n 1))) 1);
+        ECHO (testrec val)
+]

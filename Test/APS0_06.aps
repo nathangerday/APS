@@ -1,0 +1,4 @@
+[
+  FUN REC foo int [a:int] (if (not (eq a 0)) (mul (foo (sub a 1)) a) 1);
+  ECHO (foo 5)
+]

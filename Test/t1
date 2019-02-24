@@ -1,4 +1,0 @@
-[
-        CONST name bool (and true true); 
-        ECHO 1
-]

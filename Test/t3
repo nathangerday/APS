@@ -1,7 +1,0 @@
-[
-    CONST x bool true;
-    CONST y int 3;
-    CONST z bool false;
-    CONST x int 3;
-    ECHO (add x x)
-]

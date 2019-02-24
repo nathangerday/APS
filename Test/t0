@@ -1,9 +1,0 @@
-
-[
-        CONST name bool (and true true);
-        CONST age int (add (sub 3 (div 2 1)) (mul (add 3 4) 6));
-        ECHO 12;
-        FUN test int [n1:bool,n3:int,n4:int] (if n1 (add n3 n4) (sub n3 n4));
-        FUN REC testrec int [n:int] (test true 3 (testrec (testrec (testrec age))));
-        ECHO 13
-]
