@@ -147,7 +147,20 @@ main_stdin :-
     read(user_input, T),
     typeProg(T, R),
     print(R),
-    nl. 
+    nl,
+    halt.
+
+:- initialization(main, main).
+
+main(Argv):-
+    % current_prolog_flag(argv, Argv),
+    ([FA]) = Argv,
+    term_string(ToExec, FA),
+    typeProg(ToExec, R),
+    print(R),
+    nl,
+    halt.
+
 
 extract_types([(_, X)], [X]).
 
