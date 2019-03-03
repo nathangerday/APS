@@ -10,4 +10,10 @@ public class AstInvoc implements IASTExpr {
     public String toPrologString() {
         return "invoc(" + f.toPrologString() + "," + args.toPrologString() + ")";
     }
+
+
+    public Value eval(Environment env){
+        return null;
+    }
+    
 }

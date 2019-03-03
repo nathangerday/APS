@@ -15,4 +15,9 @@ public class AstFun implements IASTDec {
     public String toPrologString() {
         return "fun("+name.toPrologString()+","+ type.toPrologString()+","+ args.toPrologString() +"," + expr.toPrologString() +")";
     }
+
+
+    public Environment eval(Environment env){
+        return null;
+    }
 }

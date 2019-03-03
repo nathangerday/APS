@@ -13,4 +13,8 @@ public class AstConst implements IASTDec {
     public String toPrologString() {
         return "const("+name.toPrologString()+","+ type.toPrologString()+"," + expr.toPrologString() +")";
     }
+
+    public Environment eval(Environment env){
+        return null;
+    }
 }

@@ -14,4 +14,9 @@ public class AstIdent implements IASTExpr {
     public String toPrologString() {
         return "\"" + name + "\"";
     }
+
+
+    public Value eval(Environment env){
+        return null;
+    }
 }

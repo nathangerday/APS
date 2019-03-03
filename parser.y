@@ -36,8 +36,8 @@ prog:
 
 cmds:
     stat { $$ = new AstCmds((Ast)$1); }
-    | dec SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (Ast)$3);}
-    | stat SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (Ast)$3);}
+    | dec SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (AstCmds)$3);}
+    | stat SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (AstCmds)$3);}
 ;
 dec:
     CONST IDENT type expr { $$ = new AstConst(new AstIdent($2), (Ast)$3, (IASTExpr)$4);}

@@ -20,4 +20,10 @@ public class AstPrim implements IASTExpr {
     // public String toPrologString() {
     //     return op.toString() + "(" + a1.toPrologString() + "," + a2.toPrologString() + ")";
     // }
+
+
+    public Value eval(Environment env){
+        return null;
+    }
+    
 }

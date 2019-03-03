@@ -15,4 +15,9 @@ public class AstFunRec implements IASTDec {
     public String toPrologString() {
         return "funrec("+name.toPrologString()+","+ type.toPrologString()+","+ args.toPrologString() +"," + expr.toPrologString() +")";
     }
+
+
+    public Environment eval(Environment env){
+        return null;
+    }
 }

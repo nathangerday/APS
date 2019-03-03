@@ -12,4 +12,8 @@ public class AstIf implements IASTExpr {
     public String toPrologString() {
         return "if(" + cond.toPrologString() + "," + then.toPrologString() + "," + e.toPrologString() + ")";
     }
+
+    public Value eval(Environment env){
+        return null;
+    }
 }

@@ -9,4 +9,10 @@ public class AstNum implements IASTExpr {
     public String toPrologString() {
         return ("" + val);
     }
+
+
+    public Value eval(Environment env){
+        return null;
+    }
+    
 }

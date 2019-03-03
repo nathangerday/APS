@@ -8,7 +8,7 @@ public class Environment{
     }
 
     public Value get(String ident){
-        this.assoc.get(ident);
+        return this.assoc.get(ident);
     }
 
 }

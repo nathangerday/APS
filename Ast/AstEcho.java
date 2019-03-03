@@ -8,5 +8,10 @@ public class AstEcho implements IASTStat{
     public String toPrologString(){
         return "echo("+expr.toPrologString()+")";
     }
+
+    public OutStream eval(Environment env, OutStream o){
+        System.out.println(expr.eval(env).getN());
+        return null;
+    }
     
 }

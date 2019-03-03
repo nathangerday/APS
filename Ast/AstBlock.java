@@ -10,4 +10,8 @@ public class AstBlock implements IASTExpr {
     public String toPrologString() {
         return "block(" + args.toPrologString() + "," + expr.toPrologString() + ")";
     }
+
+    public Value eval(Environment env){
+        return null;
+    }
 }
