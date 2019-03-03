@@ -51,4 +51,9 @@ public class AstArgs implements Ast {
             return "args("+arg.toPrologString()+",args())";
         }
     }
+
+
+    public Context eval(Context c){
+        return null;
+    }
 }

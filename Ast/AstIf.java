@@ -12,4 +12,9 @@ public class AstIf implements Ast {
     public String toPrologString() {
         return "if(" + cond.toPrologString() + "," + then.toPrologString() + "," + e.toPrologString() + ")";
     }
+
+
+    public Context eval(Context c){
+        return null;
+    }
 }

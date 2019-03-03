@@ -10,4 +10,9 @@ public class AstBlock implements Ast {
     public String toPrologString() {
         return "block(" + args.toPrologString() + "," + expr.toPrologString() + ")";
     }
+
+
+    public Context eval(Context c){
+        return null;
+    }
 }

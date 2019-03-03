@@ -10,4 +10,9 @@ public class AstStar implements Ast {
     public String toPrologString() {
         return "star(" + type.toPrologString() +"," + types.toPrologString()+ ")";
     }
+
+
+    public Context eval(Context c){
+        return null;
+    }
 }

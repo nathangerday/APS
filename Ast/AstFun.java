@@ -15,4 +15,9 @@ public class AstFun implements Ast {
     public String toPrologString() {
         return "fun("+name.toPrologString()+","+ type.toPrologString()+","+ args.toPrologString() +"," + expr.toPrologString() +")";
     }
+
+
+    public Context eval(Context c){
+        return null;
+    }
 }

@@ -9,4 +9,7 @@ public class AstEcho implements Ast{
         return "echo("+expr.toPrologString()+")";
     }
     
+    public Context eval(Context c){
+        return null;
+    }
 }

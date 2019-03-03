@@ -10,4 +10,9 @@ public class AstArrow implements Ast {
     public String toPrologString() {
         return "arrow(" + types.toPrologString() + "," + type.toPrologString() + ")";
     }
+
+
+    public Context eval(Context c){
+        return null;
+    }
 }

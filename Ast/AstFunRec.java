@@ -15,4 +15,9 @@ public class AstFunRec implements Ast {
     public String toPrologString() {
         return "funrec("+name.toPrologString()+","+ type.toPrologString()+","+ args.toPrologString() +"," + expr.toPrologString() +")";
     }
+
+
+    public Context eval(Context c){
+        return null;
+    }
 }
