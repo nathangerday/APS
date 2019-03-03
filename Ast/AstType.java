@@ -8,9 +8,4 @@ public class AstType implements Ast {
     public String toPrologString() {
         return type.toString();
     }
-
-
-    public Context eval(Context c){
-        return null;
-    }
 }

@@ -3,10 +3,7 @@ YACC_J = byacc/byacc -J
 JAVAC = javac
 
 toProlog: parser Ast/Op.java Ast/Type.java ToProlog.java
-	$(JAVAC) ToProlog.java -d bin/ -sourcepath Ast/:bin/:.
-
-eval: parser Ast/Op.java Ast/Type.java Eval.java Context.java
-	$(JAVAC) Eval.java -d bin/ -sourcepath Ast/:bin/:.
+	$(JAVAC) ToProlog.java -d bin/ -sourcepath Ast/:bin/
 
 parser: parser.y lexer.lex
 	$(LEX_J) lexer.lex -d bin/

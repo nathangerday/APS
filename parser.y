@@ -26,12 +26,12 @@ import java.io.*;
 %type <obj> cmds
 %type <obj> prog
 
-%start expr
+%start prog
 
 %%
 
 prog:
-    LBRA cmds RBRA { prog=(Ast)$2; $$=(Ast)$2; }
+    LBRA cmds RBRA { prog=(AstCmds)$2; $$=(AstCmds)$2; }
 ;
 
 cmds:
@@ -40,13 +40,13 @@ cmds:
     | stat SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (Ast)$3);}
 ;
 dec:
-    CONST IDENT type expr { $$ = new AstConst(new AstIdent($2), (Ast)$3, (Ast)$4);}
-    |   FUN IDENT type LBRA args RBRA expr { $$ = new AstFun(new AstIdent($2), (Ast)$3, (Ast)$5, (Ast)$7);}
-    |   FUN REC IDENT type LBRA args RBRA expr { $$ = new AstFunRec(new AstIdent($3), (Ast)$4, (Ast)$6, (Ast)$8);}
+    CONST IDENT type expr { $$ = new AstConst(new AstIdent($2), (Ast)$3, (IASTExpr)$4);}
+    |   FUN IDENT type LBRA args RBRA expr { $$ = new AstFun(new AstIdent($2), (Ast)$3, (Ast)$5, (IASTExpr)$7);}
+    |   FUN REC IDENT type LBRA args RBRA expr { $$ = new AstFunRec(new AstIdent($3), (Ast)$4, (Ast)$6, (IASTExpr)$8);}
 ;
 
 stat: 
-    ECHO expr { $$ = new AstEcho((Ast)$2); }
+    ECHO expr { $$ = new AstEcho((IASTExpr)$2); }
 ;
 
 
@@ -76,27 +76,27 @@ expr:
     |   FALSE { $$ = new AstFalse();}
     |   NUM { $$ = new AstNum($1);}
     |   IDENT {$$ = new AstIdent($1);}
-    |   LPAR NOT expr RPAR { $$ = new AstPrim(Op.NOT, (Ast)$3, null);}
-    |   LPAR AND expr expr RPAR { $$ = new AstPrim(Op.AND ,(Ast)$3, (Ast)$4);}
-    |   LPAR OR expr expr RPAR { $$ = new AstPrim(Op.OR ,(Ast)$3, (Ast)$4);}
-    |   LPAR EQ expr expr RPAR { $$ = new AstPrim(Op.EQ ,(Ast)$3, (Ast)$4);}
-    |   LPAR LT expr expr RPAR { $$ = new AstPrim(Op.LT ,(Ast)$3, (Ast)$4);}
-    |   LPAR ADD expr expr RPAR { $$ = new AstPrim(Op.ADD ,(Ast)$3, (Ast)$4);}
-    |   LPAR SUB expr expr RPAR { $$ = new AstPrim(Op.SUB ,(Ast)$3, (Ast)$4);}
-    |   LPAR MUL expr expr RPAR { $$ = new AstPrim(Op.MUL ,(Ast)$3, (Ast)$4);}
-    |   LPAR DIV expr expr RPAR { $$ = new AstPrim(Op.DIV ,(Ast)$3, (Ast)$4);}
-    |   LBRA args RBRA expr { $$ = new AstBlock((Ast)$2, (Ast)$4);}
-    |   LPAR expr exprs RPAR { $$ = new AstInvoc((Ast)$2, (Ast)$3);}
-    |   LPAR IF expr expr expr RPAR { $$ = new AstIf((Ast)$3, (Ast)$4, (Ast)$5);}
+    |   LPAR NOT expr RPAR { $$ = new AstPrim(Op.NOT, (IASTExpr)$3, null);}
+    |   LPAR AND expr expr RPAR { $$ = new AstPrim(Op.AND ,(IASTExpr)$3, (IASTExpr)$4);}
+    |   LPAR OR expr expr RPAR { $$ = new AstPrim(Op.OR ,(IASTExpr)$3, (IASTExpr)$4);}
+    |   LPAR EQ expr expr RPAR { $$ = new AstPrim(Op.EQ ,(IASTExpr)$3, (IASTExpr)$4);}
+    |   LPAR LT expr expr RPAR { $$ = new AstPrim(Op.LT ,(IASTExpr)$3, (IASTExpr)$4);}
+    |   LPAR ADD expr expr RPAR { $$ = new AstPrim(Op.ADD ,(IASTExpr)$3, (IASTExpr)$4);}
+    |   LPAR SUB expr expr RPAR { $$ = new AstPrim(Op.SUB ,(IASTExpr)$3, (IASTExpr)$4);}
+    |   LPAR MUL expr expr RPAR { $$ = new AstPrim(Op.MUL ,(IASTExpr)$3, (IASTExpr)$4);}
+    |   LPAR DIV expr expr RPAR { $$ = new AstPrim(Op.DIV ,(IASTExpr)$3, (IASTExpr)$4);}
+    |   LBRA args RBRA expr { $$ = new AstBlock((Ast)$2, (IASTExpr)$4);}
+    |   LPAR expr exprs RPAR { $$ = new AstInvoc((IASTExpr)$2, (Ast)$3);}
+    |   LPAR IF expr expr expr RPAR { $$ = new AstIf((IASTExpr)$3, (IASTExpr)$4, (IASTExpr)$5);}
 ;
 
 exprs:
-    expr { $$ = new AstExprs((Ast)$1); }
-    | expr exprs { $$ = new AstExprs((Ast)$1, (Ast)$2);}
+    expr { $$ = new AstExprs((IASTExpr)$1); }
+    | expr exprs { $$ = new AstExprs((IASTExpr)$1, (Ast)$2);}
 ;
 %%
 
-public Ast prog;
+public AstCmds prog;
 private Yylex lexer;
 private int yylex () {
     int yyl_return = -1;

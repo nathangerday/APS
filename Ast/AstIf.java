@@ -1,9 +1,9 @@
-public class AstIf implements Ast {
-    Ast cond;
-    Ast then;
-    Ast e;
+public class AstIf implements IASTExpr {
+    IASTExpr cond;
+    IASTExpr then;
+    IASTExpr e;
 
-    AstIf(Ast cond, Ast then, Ast e) {
+    AstIf(IASTExpr cond, IASTExpr then, IASTExpr e) {
         this.cond = cond;
         this.then = then;
         this.e = e;
@@ -11,10 +11,5 @@ public class AstIf implements Ast {
 
     public String toPrologString() {
         return "if(" + cond.toPrologString() + "," + then.toPrologString() + "," + e.toPrologString() + ")";
-    }
-
-
-    public Context eval(Context c){
-        return null;
     }
 }

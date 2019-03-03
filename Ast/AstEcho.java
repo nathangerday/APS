@@ -1,7 +1,7 @@
-public class AstEcho implements Ast{
-    Ast expr;
+public class AstEcho implements IASTStat{
+    IASTExpr expr;
 
-    public AstEcho(Ast expr){
+    public AstEcho(IASTExpr expr){
         this.expr = expr;
     }
 
@@ -9,7 +9,4 @@ public class AstEcho implements Ast{
         return "echo("+expr.toPrologString()+")";
     }
     
-    public Context eval(Context c){
-        return null;
-    }
 }

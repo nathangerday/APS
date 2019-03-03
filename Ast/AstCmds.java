@@ -1,4 +1,4 @@
-public class AstCmds implements Ast{
+public class AstCmds implements IASTCmds{
     Ast a1;
     Ast a2;
 
@@ -18,10 +18,6 @@ public class AstCmds implements Ast{
         }else{
             return "cmds(" + a1.toPrologString() + ",cmds())";
         }
-    }
-
-    public Context eval(Context c){
-        return null;
     }
 
 }

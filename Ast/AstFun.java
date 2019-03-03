@@ -1,11 +1,11 @@
-public class AstFun implements Ast {
+public class AstFun implements IASTDec {
     
     Ast name;
     Ast type;
     Ast args;
-    Ast expr;
+    IASTExpr expr;
 
-    AstFun(Ast name, Ast type, Ast args, Ast expr) {
+    AstFun(Ast name, Ast type, Ast args, IASTExpr expr) {
         this.name = name;
         this.type = type;
         this.expr = expr;
@@ -14,10 +14,5 @@ public class AstFun implements Ast {
 
     public String toPrologString() {
         return "fun("+name.toPrologString()+","+ type.toPrologString()+","+ args.toPrologString() +"," + expr.toPrologString() +")";
-    }
-
-
-    public Context eval(Context c){
-        return null;
     }
 }

@@ -1,12 +1,6 @@
-public class AstTrue implements Ast {
+public class AstTrue implements IASTExpr {
 
     public String toPrologString() {
         return "true";
     }
-
-
-    public Context eval(Context c){
-        return null;
-    }
-    
 }

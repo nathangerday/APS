@@ -1,17 +1,17 @@
-public class AstIdent implements Ast {
+public class AstIdent implements IASTExpr {
     String name;
 
     AstIdent(String x) {
         name = x;
     }
 
+    public String getString(){
+        return this.name;
+    }
+    
+
     @Override
     public String toPrologString() {
         return "\"" + name + "\"";
-    }
-
-
-    public Context eval(Context c){
-        return null;
     }
 }

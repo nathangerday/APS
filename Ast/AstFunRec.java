@@ -1,11 +1,11 @@
-public class AstFunRec implements Ast {
+public class AstFunRec implements IASTDec {
     
     Ast name;
     Ast type;
     Ast args;
-    Ast expr;
+    IASTExpr expr;
 
-    AstFunRec(Ast name, Ast type, Ast args, Ast expr) {
+    AstFunRec(Ast name, Ast type, Ast args, IASTExpr expr) {
         this.name = name;
         this.type = type;
         this.expr = expr;
@@ -14,10 +14,5 @@ public class AstFunRec implements Ast {
 
     public String toPrologString() {
         return "funrec("+name.toPrologString()+","+ type.toPrologString()+","+ args.toPrologString() +"," + expr.toPrologString() +")";
-    }
-
-
-    public Context eval(Context c){
-        return null;
     }
 }
