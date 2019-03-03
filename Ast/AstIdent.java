@@ -9,9 +9,4 @@ public class AstIdent implements Ast {
     public String toPrologString() {
         return "\"" + name + "\"";
     }
-
-
-    public Context eval(Context c){
-        return null;
-    }
 }

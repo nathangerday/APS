@@ -26,7 +26,7 @@ import java.io.*;
 %type <obj> cmds
 %type <obj> prog
 
-%start expr
+%start prog
 
 %%
 

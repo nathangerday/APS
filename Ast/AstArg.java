@@ -10,8 +10,4 @@ public class AstArg implements Ast {
     public String toPrologString() {
         return "arg("+name.toPrologString()+","+ type.toPrologString()+")";
     }
-
-    public Context eval(Context c){
-        return null;
-    }
 }

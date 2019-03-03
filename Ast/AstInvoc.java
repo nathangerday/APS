@@ -10,9 +10,4 @@ public class AstInvoc implements Ast {
     public String toPrologString() {
         return "invoc(" + f.toPrologString() + "," + args.toPrologString() + ")";
     }
-
-
-    public Context eval(Context c){
-        return null;
-    }
 }

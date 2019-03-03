@@ -9,13 +9,4 @@ public class AstNum implements Ast {
     public String toPrologString() {
         return ("" + val);
     }
-
-    public Integer getVal(){
-        return this.val;
-    }
-
-    public Context eval(Context c){
-        return null;
-    }
-    
 }

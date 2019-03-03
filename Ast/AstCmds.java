@@ -20,8 +20,4 @@ public class AstCmds implements Ast{
         }
     }
 
-    public Context eval(Context c){
-        return null;
-    }
-
 }

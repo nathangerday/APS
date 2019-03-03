@@ -13,9 +13,4 @@ public class AstConst implements Ast {
     public String toPrologString() {
         return "const("+name.toPrologString()+","+ type.toPrologString()+"," + expr.toPrologString() +")";
     }
-
-
-    public Context eval(Context c){
-        return null;
-    }
 }

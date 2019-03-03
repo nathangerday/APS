@@ -19,9 +19,4 @@ public class AstExprs implements Ast {
             return "exprs("+ expr.toPrologString() +",exprs())";
         }
     }
-
-
-    public Context eval(Context c){
-        return null;
-    }
 }
