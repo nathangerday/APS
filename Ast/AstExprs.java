@@ -13,6 +13,7 @@ public class AstExprs implements Ast {
     }
 
     public String toPrologString() {
+        //TODO Comment evaluer les suites d'expressions ?
         if(this.exprs != null){
             return "exprs("+expr.toPrologString() + "," + exprs.toPrologString()+")";
         }else{

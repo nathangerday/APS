@@ -6,6 +6,6 @@ public class AstTrue implements IASTExpr {
 
 
     public Value eval(Environment env){
-        return null;
+        return new Value(1);
     }
 }

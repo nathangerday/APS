@@ -17,6 +17,6 @@ public class AstIdent implements IASTExpr {
 
 
     public Value eval(Environment env){
-        return null;
+        return env.get(name);
     }
 }
