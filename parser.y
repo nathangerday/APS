@@ -31,22 +31,22 @@ import java.io.*;
 %%
 
 prog:
-    LBRA cmds RBRA { prog=(Ast)$2; $$=(Ast)$2; }
+    LBRA cmds RBRA { prog=(AstCmds)$2; $$=(AstCmds)$2; }
 ;
 
 cmds:
     stat { $$ = new AstCmds((Ast)$1); }
-    | dec SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (Ast)$3);}
-    | stat SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (Ast)$3);}
+    | dec SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (AstCmds)$3);}
+    | stat SEMICOLON cmds { $$ = new AstCmds((Ast)$1, (AstCmds)$3);}
 ;
 dec:
-    CONST IDENT type expr { $$ = new AstConst(new AstIdent($2), (Ast)$3, (Ast)$4);}
-    |   FUN IDENT type LBRA args RBRA expr { $$ = new AstFun(new AstIdent($2), (Ast)$3, (Ast)$5, (Ast)$7);}
-    |   FUN REC IDENT type LBRA args RBRA expr { $$ = new AstFunRec(new AstIdent($3), (Ast)$4, (Ast)$6, (Ast)$8);}
+    CONST IDENT type expr { $$ = new AstConst(new AstIdent($2), (Ast)$3, (IASTExpr)$4);}
+    |   FUN IDENT type LBRA args RBRA expr { $$ = new AstFun(new AstIdent($2), (Ast)$3, (AstArgs)$5, (IASTExpr)$7);}
+    |   FUN REC IDENT type LBRA args RBRA expr { $$ = new AstFunRec(new AstIdent($3), (Ast)$4, (AstArgs)$6, (IASTExpr)$8);}
 ;
 
 stat: 
-    ECHO expr { $$ = new AstEcho((Ast)$2); }
+    ECHO expr { $$ = new AstEcho((IASTExpr)$2); }
 ;
 
 
@@ -56,8 +56,8 @@ arg:
 
 args:
     // arg {$$ = new AstArgs((Ast)$1);}
-    arg {$$ = new AstArgs((Ast)$1);}
-    | arg COMMA args { $$ = new AstArgs((Ast)$1, (Ast)$3);}
+    arg {$$ = new AstArgs((AstArg)$1);}
+    | arg COMMA args { $$ = new AstArgs((AstArg)$1, (AstArgs)$3);}
 ;
 
 type:
@@ -76,27 +76,27 @@ expr:
     |   FALSE { $$ = new AstFalse();}
     |   NUM { $$ = new AstNum($1);}
     |   IDENT {$$ = new AstIdent($1);}
-    |   LPAR NOT expr RPAR { $$ = new AstPrim(Op.NOT, (Ast)$3, null);}
-    |   LPAR AND expr expr RPAR { $$ = new AstPrim(Op.AND ,(Ast)$3, (Ast)$4);}
-    |   LPAR OR expr expr RPAR { $$ = new AstPrim(Op.OR ,(Ast)$3, (Ast)$4);}
-    |   LPAR EQ expr expr RPAR { $$ = new AstPrim(Op.EQ ,(Ast)$3, (Ast)$4);}
-    |   LPAR LT expr expr RPAR { $$ = new AstPrim(Op.LT ,(Ast)$3, (Ast)$4);}
-    |   LPAR ADD expr expr RPAR { $$ = new AstPrim(Op.ADD ,(Ast)$3, (Ast)$4);}
-    |   LPAR SUB expr expr RPAR { $$ = new AstPrim(Op.SUB ,(Ast)$3, (Ast)$4);}
-    |   LPAR MUL expr expr RPAR { $$ = new AstPrim(Op.MUL ,(Ast)$3, (Ast)$4);}
-    |   LPAR DIV expr expr RPAR { $$ = new AstPrim(Op.DIV ,(Ast)$3, (Ast)$4);}
-    |   LBRA args RBRA expr { $$ = new AstBlock((Ast)$2, (Ast)$4);}
-    |   LPAR expr exprs RPAR { $$ = new AstInvoc((Ast)$2, (Ast)$3);}
-    |   LPAR IF expr expr expr RPAR { $$ = new AstIf((Ast)$3, (Ast)$4, (Ast)$5);}
+    |   LPAR NOT exprs RPAR { $$ = new AstPrim(Op.NOT, (AstExprs)$3);}
+    |   LPAR AND exprs RPAR { $$ = new AstPrim(Op.AND , (AstExprs)$3);}
+    |   LPAR OR exprs RPAR { $$ = new AstPrim(Op.OR , (AstExprs)$3);}
+    |   LPAR EQ exprs RPAR { $$ = new AstPrim(Op.EQ , (AstExprs)$3);}
+    |   LPAR LT exprs RPAR { $$ = new AstPrim(Op.LT , (AstExprs)$3);}
+    |   LPAR ADD exprs RPAR { $$ = new AstPrim(Op.ADD , (AstExprs)$3);}
+    |   LPAR SUB exprs RPAR { $$ = new AstPrim(Op.SUB , (AstExprs)$3);}
+    |   LPAR MUL exprs RPAR { $$ = new AstPrim(Op.MUL , (AstExprs)$3);}
+    |   LPAR DIV exprs RPAR { $$ = new AstPrim(Op.DIV , (AstExprs)$3);}
+    |   LBRA args RBRA expr { $$ = new AstAbs((AstArgs)$2, (IASTExpr)$4);}
+    |   LPAR expr exprs RPAR { $$ = new AstApp((IASTExpr)$2, (AstExprs)$3);}
+    |   LPAR IF expr expr expr RPAR { $$ = new AstIf((IASTExpr)$3, (IASTExpr)$4, (IASTExpr)$5);}
 ;
 
 exprs:
-    expr { $$ = new AstExprs((Ast)$1); }
-    | expr exprs { $$ = new AstExprs((Ast)$1, (Ast)$2);}
+    expr { $$ = new AstExprs((IASTExpr)$1); }
+    | expr exprs { $$ = new AstExprs((IASTExpr)$1, (AstExprs)$2);}
 ;
 %%
 
-public Ast prog;
+public AstCmds prog;
 private Yylex lexer;
 private int yylex () {
     int yyl_return = -1;

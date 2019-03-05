@@ -4,33 +4,33 @@ typeExpr(_, false, bool).
 typeExpr(_, X, int) :- integer(X).
 typeExpr(G, X, T) :- string(X), assoc(X, G, T).
 
-typeExpr(G, not(X), bool) :- typeExpr(G, X, bool).
+typeExpr(G, not(exprs(X, exprs())), bool) :- typeExpr(G, X, bool).
 
-typeExpr(G, and(X, Y), bool) :- typeExpr(G, X, bool), typeExpr(G, Y, bool).
+typeExpr(G, and(exprs(X, exprs(Y, exprs()))), bool) :- typeExpr(G, X, bool), typeExpr(G, Y, bool).
 
-typeExpr(G, or(X, Y), bool) :- typeExpr(G, X, bool), typeExpr(G, Y, bool).
+typeExpr(G, or(exprs(X, exprs(Y, exprs()))), bool) :- typeExpr(G, X, bool), typeExpr(G, Y, bool).
 
-typeExpr(G, eq(X, Y), bool) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
+typeExpr(G, eq(exprs(X, exprs(Y, exprs()))), bool) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, lt(X, Y), bool) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
+typeExpr(G, lt(exprs(X, exprs(Y, exprs()))), bool) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, add(X, Y), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
+typeExpr(G, add(exprs(X, exprs(Y, exprs()))), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, sub(X, Y), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
+typeExpr(G, sub(exprs(X, exprs(Y, exprs()))), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, mul(X, Y), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
+typeExpr(G, mul(exprs(X, exprs(Y, exprs()))), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, div(X,Y), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
+typeExpr(G, div(exprs(X, exprs(Y, exprs()))), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
 typeExpr(G, if(X, Y, Z), T) :- typeExpr(G, X, bool), typeExpr(G, Y, T), typeExpr(G, Z, T).
 
-typeExpr(G, block(A, Y), [TS | [T]]) :-
+typeExpr(G, abs(A, Y), [TS | [T]]) :-
     typeArgs([], A, NG), % Cree le nouveau contexte en fonction des args
     extract_types(NG, TS), % Extraie les différents types des args pour le obtenir le type de retour
     append(NG, G, NNG), % Ajout du contexte courant au contexte des args 
     typeExpr(NNG, Y, T).
 
-typeExpr(G, invoc(X, Y), S) :-
+typeExpr(G, app(X, Y), S) :-
     typeExprs(G, Y, TE),
     typeExpr(G, X, [T | [S]]),
     compare(=, T, TE).
@@ -220,13 +220,13 @@ convertTypesToProlog(X, [R]) :-
 % Exemples
 % ================================
 
-% ?- typeExpr([("f", [[bool, int, int], bool])], invoc("f", exprs(and(true,false), exprs(add(1,2), div(4,5)))), X).
+% ?- typeExpr([("f", [[bool, int, int], bool])], app("f", exprs(and(true,false), exprs(add(1,2), div(4,5)))), X).
 % X = [bool] .
 
 % ?- typeArgs([], args(arg("name",arrow(star(int, bool), bool)),args(arg("val",int), arg("val3",bool))), X).
 % X = [("val3", bool),  ("val", int),  ("name", [[int, bool], bool])] 
 
-% ?- typeExpr([], block(args(arg("a", int), args(arg("b", bool), arg("c", int))), div(2,3)), X).
+% ?- typeExpr([], abs(args(arg("a", int), args(arg("b", bool), arg("c", int))), div(2,3)), X).
 % X = [[int, bool, int], int]
 
 % ?- typeExprs([], exprs(add(1,2), exprs(and(true, false), exprs(div(4, 2), exprs(if(true, not(false), and(true, false)), lt(2,4))))), X).
@@ -235,7 +235,7 @@ convertTypesToProlog(X, [R]) :-
 % ?- typeDec([], fun("f", bool, args(arg("a", int), arg("b", int)), eq("a", "b")), T).
 % T = [("f", [[int, int], bool])] .
 
-% ?- typeDec([("a", int)], funrec("f", bool, args(arg("a", int), arg("b", int)), invoc("f", exprs("a", "b"))), G).
+% ?- typeDec([("a", int)], funrec("f", bool, args(arg("a", int), arg("b", int)), app("f", exprs("a", "b"))), G).
 % G = [("f", [[int, int], bool]),  ("a", int)] .
 
 % ================= ONE LINER =================

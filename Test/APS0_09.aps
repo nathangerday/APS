@@ -1,0 +1,4 @@
+[
+    FUN REC fibo int [x:int] (if (lt x 2) x (add (fibo (sub x 2)) (fibo (sub x 1))));
+    ECHO (fibo 25)
+]

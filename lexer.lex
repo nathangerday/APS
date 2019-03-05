@@ -57,7 +57,7 @@ sep = [\n | \t | ' ']
 
 
 /* newline */
-{sep} { } //{ return Parser.NL; } //TODO Do anything here ?
+{sep} { }
 
 
 {nums} { yyparser.yylval = new ParserVal(Integer.parseInt(yytext()));

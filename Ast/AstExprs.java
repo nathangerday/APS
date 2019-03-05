@@ -1,22 +1,39 @@
-public class AstExprs implements Ast {
-    Ast expr;
-    Ast exprs;
+import java.util.ArrayList;
 
-    AstExprs(Ast expr, Ast exprs) {
-        this.expr = expr;
-        this.exprs = exprs;
+public class AstExprs implements Ast {
+    ArrayList<IASTExpr> exprs;
+
+    AstExprs(IASTExpr expr) {
+        this.exprs = new ArrayList<>();
+        exprs.add(expr);
     }
 
-    AstExprs(Ast expr){
-        this.expr = expr;
-        this.exprs = null;
+    AstExprs(IASTExpr expr, AstExprs exprs){
+        this.exprs = new ArrayList<>();
+        this.exprs.add(expr);
+        this.exprs.addAll(((AstExprs)exprs).exprs);
     }
 
     public String toPrologString() {
-        if(this.exprs != null){
-            return "exprs("+expr.toPrologString() + "," + exprs.toPrologString()+")";
-        }else{
-            return "exprs("+ expr.toPrologString() +",exprs())";
+        String res = "";
+        for(IASTExpr e : exprs){
+            res+="exprs(";
+            res+=e.toPrologString();
+            res+=",";
         }
+        res+="exprs()";
+        for(int i=0; i<exprs.size();i++){
+            res+=")";
+        }
+        return res;
+
+    }
+  
+    public ArrayList<Value> eval(Environment env){
+        ArrayList<Value> res = new ArrayList<>();
+        for(IASTExpr e : exprs){
+            res.add(e.eval(env));
+        }
+        return res;
     }
 }

@@ -1,7 +1,7 @@
 import java.io.*;
 
-class ToProlog {
-    public static void main(String args[]) throws IOException {
+public class Eval{
+    public static void main(String args[]) throws IOException{
         Parser yyparser;
         AstCmds prog;
         if(args.length == 1){
@@ -11,9 +11,15 @@ class ToProlog {
         }
         yyparser.yyparse();
         prog = (AstCmds) yyparser.yyval.obj;
-        if (prog != null)
-            System.out.println(prog.toPrologString());
-        else
-            System.out.println("Null");
+
+        if (prog == null){
+            System.out.println("Ast null");
+            return;
+        }
+
+        Environment env = new Environment();
+        OutStream o = new OutStream();
+        OutStream res = prog.eval(env, o);
+        res.print();
     }
 }

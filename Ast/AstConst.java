@@ -1,10 +1,10 @@
-public class AstConst implements Ast {
+public class AstConst implements IASTDec {
     
     Ast name;
     Ast type;
-    Ast expr;
+    IASTExpr expr;
 
-    AstConst(Ast name, Ast type, Ast expr) {
+    AstConst(Ast name, Ast type, IASTExpr expr) {
         this.name = name;
         this.type = type;
         this.expr = expr;
@@ -12,5 +12,14 @@ public class AstConst implements Ast {
 
     public String toPrologString() {
         return "const("+name.toPrologString()+","+ type.toPrologString()+"," + expr.toPrologString() +")";
+    }
+
+    public Environment eval(Environment env){
+        if(name instanceof AstIdent){
+            Environment newenv = new Environment(env); //Copy the environment, we don't want to change it directly
+            newenv.add(((AstIdent)name).getString(), expr.eval(env));
+            return newenv;
+        }
+        return null;
     }
 }

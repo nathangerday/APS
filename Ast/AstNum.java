@@ -1,4 +1,4 @@
-public class AstNum implements Ast {
+public class AstNum implements IASTExpr {
     Integer val;
 
     AstNum(Integer n) {
@@ -9,4 +9,10 @@ public class AstNum implements Ast {
     public String toPrologString() {
         return ("" + val);
     }
+
+
+    public Value eval(Environment env){
+        return new Value(val);
+    }
+    
 }
