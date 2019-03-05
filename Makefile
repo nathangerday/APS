@@ -2,6 +2,8 @@ LEX_J = jflex/bin/jflex
 YACC_J = byacc/byacc -J 
 JAVAC = javac
 
+all: toProlog eval
+
 toProlog: parser Ast/Op.java Ast/Type.java ToProlog.java
 	$(JAVAC) ToProlog.java -d bin/ -sourcepath Ast/:bin/
 
