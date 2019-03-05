@@ -4,23 +4,23 @@ typeExpr(_, false, bool).
 typeExpr(_, X, int) :- integer(X).
 typeExpr(G, X, T) :- string(X), assoc(X, G, T).
 
-typeExpr(G, not(X), bool) :- typeExpr(G, X, bool).
+typeExpr(G, not(exprs(X, exprs())), bool) :- typeExpr(G, X, bool).
 
-typeExpr(G, and(X, Y), bool) :- typeExpr(G, X, bool), typeExpr(G, Y, bool).
+typeExpr(G, and(exprs(X, exprs(Y, exprs()))), bool) :- typeExpr(G, X, bool), typeExpr(G, Y, bool).
 
-typeExpr(G, or(X, Y), bool) :- typeExpr(G, X, bool), typeExpr(G, Y, bool).
+typeExpr(G, or(exprs(X, exprs(Y, exprs()))), bool) :- typeExpr(G, X, bool), typeExpr(G, Y, bool).
 
-typeExpr(G, eq(X, Y), bool) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
+typeExpr(G, eq(exprs(X, exprs(Y, exprs()))), bool) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, lt(X, Y), bool) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
+typeExpr(G, lt(exprs(X, exprs(Y, exprs()))), bool) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, add(X, Y), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
+typeExpr(G, add(exprs(X, exprs(Y, exprs()))), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, sub(X, Y), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
+typeExpr(G, sub(exprs(X, exprs(Y, exprs()))), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, mul(X, Y), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
+typeExpr(G, mul(exprs(X, exprs(Y, exprs()))), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
-typeExpr(G, div(X,Y), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
+typeExpr(G, div(exprs(X, exprs(Y, exprs()))), int) :- typeExpr(G, X, int), typeExpr(G, Y, int).    
 
 typeExpr(G, if(X, Y, Z), T) :- typeExpr(G, X, bool), typeExpr(G, Y, T), typeExpr(G, Z, T).
 

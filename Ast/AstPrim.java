@@ -1,57 +1,70 @@
+import java.util.ArrayList;
+
+
 public class AstPrim implements IASTExpr {
     Op op;
-    IASTExpr a1;
-    IASTExpr a2;
+    AstExprs exprs;
 
-    AstPrim(Op op, IASTExpr a1, IASTExpr a2) {
+    AstPrim(Op op, AstExprs e) {
         this.op = op;
-        this.a1 = a1;
-        this.a2 = a2;
+        this.exprs = e;
     }
 
 
     public String toPrologString() {
-        if(a2 == null){
-            return op.toString() + "(" + a1.toPrologString() + ")";
-        }else{
-            return op.toString() + "(" + a1.toPrologString() + "," + a2.toPrologString() + ")";
-        }
+        return op.toString() + "(" + exprs.toPrologString() + ")";
     }
-    // public String toPrologString() {
-    //     return op.toString() + "(" + a1.toPrologString() + "," + a2.toPrologString() + ")";
-    // }
 
 
     public Value eval(Environment env){
-        Integer val1 = a1.eval(env).getN();
-        Integer val2 = null;
-        if(a2 != null){
-            val2 = a2.eval(env).getN();
-        }
+        ArrayList<Value> vals = exprs.eval(env);
+        Integer tmpval1;
+        Integer tmpval2;
+        tmpval1 = vals.get(0).getN();
+        tmpval2 = vals.get(1).getN();
+        
         switch(op){
             case ADD:
-                return new Value(val1+val2);
+                return new Value(tmpval1+tmpval2);
             case SUB:
-                return new Value(val1-val2);
+                return new Value(tmpval1-tmpval2);
             case MUL:
-                return new Value(val1*val2);
+                return new Value(tmpval1*tmpval2);
             case DIV:
-                return new Value(val1/val2);
+                return new Value(tmpval1/tmpval2);
             case NOT:
-                return new Value(1);
+                if(tmpval1 == 1){
+                    return new Value(0);
+                }else{
+                    return new Value(1);
+                }
             case AND:
-                return new Value(1);
+                
+                if(tmpval1 == 0){
+                    return new Value(0);
+                }else{
+                    return new Value(tmpval2);
+                }
             case OR:
-                return new Value(1);
+                if(tmpval1 == 1){
+                    return new Value(1);
+                }else{
+                    return new Value(tmpval2);
+                }
             case EQ:
-                return new Value(1);
+                if(tmpval1 == tmpval2){
+                    return new Value(1);
+                }else{
+                    return new Value(0);
+                }
             case LT:
-                if(val1 < val2){
+                if(tmpval1 < tmpval2){
                     return new Value(1);
                 }else{
                     return new Value(0);
                 }
         }
+        System.err.println("Undefined operation, should never see this message");
         return null;
     }
     

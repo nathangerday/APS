@@ -76,15 +76,15 @@ expr:
     |   FALSE { $$ = new AstFalse();}
     |   NUM { $$ = new AstNum($1);}
     |   IDENT {$$ = new AstIdent($1);}
-    |   LPAR NOT expr RPAR { $$ = new AstPrim(Op.NOT, (IASTExpr)$3, null);}
-    |   LPAR AND expr expr RPAR { $$ = new AstPrim(Op.AND ,(IASTExpr)$3, (IASTExpr)$4);}
-    |   LPAR OR expr expr RPAR { $$ = new AstPrim(Op.OR ,(IASTExpr)$3, (IASTExpr)$4);}
-    |   LPAR EQ expr expr RPAR { $$ = new AstPrim(Op.EQ ,(IASTExpr)$3, (IASTExpr)$4);}
-    |   LPAR LT expr expr RPAR { $$ = new AstPrim(Op.LT ,(IASTExpr)$3, (IASTExpr)$4);}
-    |   LPAR ADD expr expr RPAR { $$ = new AstPrim(Op.ADD ,(IASTExpr)$3, (IASTExpr)$4);}
-    |   LPAR SUB expr expr RPAR { $$ = new AstPrim(Op.SUB ,(IASTExpr)$3, (IASTExpr)$4);}
-    |   LPAR MUL expr expr RPAR { $$ = new AstPrim(Op.MUL ,(IASTExpr)$3, (IASTExpr)$4);}
-    |   LPAR DIV expr expr RPAR { $$ = new AstPrim(Op.DIV ,(IASTExpr)$3, (IASTExpr)$4);}
+    |   LPAR NOT exprs RPAR { $$ = new AstPrim(Op.NOT, (AstExprs)$3);}
+    |   LPAR AND exprs RPAR { $$ = new AstPrim(Op.AND , (AstExprs)$3);}
+    |   LPAR OR exprs RPAR { $$ = new AstPrim(Op.OR , (AstExprs)$3);}
+    |   LPAR EQ exprs RPAR { $$ = new AstPrim(Op.EQ , (AstExprs)$3);}
+    |   LPAR LT exprs RPAR { $$ = new AstPrim(Op.LT , (AstExprs)$3);}
+    |   LPAR ADD exprs RPAR { $$ = new AstPrim(Op.ADD , (AstExprs)$3);}
+    |   LPAR SUB exprs RPAR { $$ = new AstPrim(Op.SUB , (AstExprs)$3);}
+    |   LPAR MUL exprs RPAR { $$ = new AstPrim(Op.MUL , (AstExprs)$3);}
+    |   LPAR DIV exprs RPAR { $$ = new AstPrim(Op.DIV , (AstExprs)$3);}
     |   LBRA args RBRA expr { $$ = new AstBlock((Ast)$2, (IASTExpr)$4);}
     |   LPAR expr exprs RPAR { $$ = new AstInvoc((IASTExpr)$2, (Ast)$3);}
     |   LPAR IF expr expr expr RPAR { $$ = new AstIf((IASTExpr)$3, (IASTExpr)$4, (IASTExpr)$5);}
@@ -92,7 +92,7 @@ expr:
 
 exprs:
     expr { $$ = new AstExprs((IASTExpr)$1); }
-    | expr exprs { $$ = new AstExprs((IASTExpr)$1, (Ast)$2);}
+    | expr exprs { $$ = new AstExprs((IASTExpr)$1, (AstExprs)$2);}
 ;
 %%
 
