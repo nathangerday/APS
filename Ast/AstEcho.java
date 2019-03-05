@@ -10,9 +10,9 @@ public class AstEcho implements IASTStat{
     }
 
     public OutStream eval(Environment env, OutStream o){
-        //TODO Que faire ici ? Affiche avec Sysout ou ajout dans flux de sortie ? 
-        System.out.println(expr.eval(env).getN());
-        return null;
+        OutStream newo = new OutStream(o);
+        o.add(expr.eval(env).getN());
+        return o;
     }
     
 }

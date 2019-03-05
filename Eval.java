@@ -19,7 +19,7 @@ public class Eval{
 
         Environment env = new Environment();
         OutStream o = new OutStream();
-        prog.eval(env, o);
-        
+        OutStream res = prog.eval(env, o);
+        res.print();
     }
 }
