@@ -85,8 +85,8 @@ expr:
     |   LPAR SUB exprs RPAR { $$ = new AstPrim(Op.SUB , (AstExprs)$3);}
     |   LPAR MUL exprs RPAR { $$ = new AstPrim(Op.MUL , (AstExprs)$3);}
     |   LPAR DIV exprs RPAR { $$ = new AstPrim(Op.DIV , (AstExprs)$3);}
-    |   LBRA args RBRA expr { $$ = new AstBlock((Ast)$2, (IASTExpr)$4);}
-    |   LPAR expr exprs RPAR { $$ = new AstInvoc((IASTExpr)$2, (Ast)$3);}
+    |   LBRA args RBRA expr { $$ = new AstAbs((Ast)$2, (IASTExpr)$4);}
+    |   LPAR expr exprs RPAR { $$ = new AstApp((IASTExpr)$2, (Ast)$3);}
     |   LPAR IF expr expr expr RPAR { $$ = new AstIf((IASTExpr)$3, (IASTExpr)$4, (IASTExpr)$5);}
 ;
 

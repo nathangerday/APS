@@ -1,14 +1,14 @@
-public class AstInvoc implements IASTExpr {
+public class AstApp implements IASTExpr {
     IASTExpr f;
     Ast args;
 
-    AstInvoc(IASTExpr f, Ast args) {
+    AstApp(IASTExpr f, Ast args) {
         this.f = f;
         this.args = args;
     }
 
     public String toPrologString() {
-        return "invoc(" + f.toPrologString() + "," + args.toPrologString() + ")";
+        return "app(" + f.toPrologString() + "," + args.toPrologString() + ")";
     }
 
 
