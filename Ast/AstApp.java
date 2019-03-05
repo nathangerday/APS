@@ -1,8 +1,10 @@
+import java.util.ArrayList;
+
 public class AstApp implements IASTExpr {
     IASTExpr f;
-    Ast args;
+    AstExprs args;
 
-    AstApp(IASTExpr f, Ast args) {
+    AstApp(IASTExpr f, AstExprs args) {
         this.f = f;
         this.args = args;
     }
@@ -13,6 +15,13 @@ public class AstApp implements IASTExpr {
 
 
     public Value eval(Environment env){
+        Value fun = f.eval(env);
+        ArrayList<Value> valOfArgs = args.eval(env);
+
+        if(fun.getF() != null){
+            return fun.getF().eval(valOfArgs);
+        } 
+
         return null;
     }
     

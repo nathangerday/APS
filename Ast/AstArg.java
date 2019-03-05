@@ -7,6 +7,10 @@ public class AstArg implements Ast {
         this.type = type;
     }
 
+    public String getName(){
+        return ((AstIdent)name).getString();
+    }
+
     public String toPrologString() {
         return "arg("+name.toPrologString()+","+ type.toPrologString()+")";
     }

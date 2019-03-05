@@ -2,10 +2,10 @@ public class AstFun implements IASTDec {
     
     Ast name;
     Ast type;
-    Ast args;
+    AstArgs args;
     IASTExpr expr;
 
-    AstFun(Ast name, Ast type, Ast args, IASTExpr expr) {
+    AstFun(Ast name, Ast type, AstArgs args, IASTExpr expr) {
         this.name = name;
         this.type = type;
         this.expr = expr;
@@ -18,6 +18,13 @@ public class AstFun implements IASTDec {
 
 
     public Environment eval(Environment env){
+        Closure c = new Closure(expr, env, args.getAll());
+        if(name instanceof AstIdent){
+            Environment newenv = new Environment(env);
+            newenv.add(((AstIdent)name).getString(), new Value(c));
+            return newenv;
+        }
         return null;
+        
     }
 }

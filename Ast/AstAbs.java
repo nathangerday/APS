@@ -1,8 +1,8 @@
 public class AstAbs implements IASTExpr {
-    Ast args;
+    AstArgs args;
     IASTExpr expr;
 
-    AstAbs(Ast args, IASTExpr expr) {
+    AstAbs(AstArgs args, IASTExpr expr) {
         this.args = args;
         this.expr = expr;
     }
@@ -12,7 +12,7 @@ public class AstAbs implements IASTExpr {
     }
 
     public Value eval(Environment env){
-        //TODO Eval
-        return null;
+        Closure c = new Closure(expr, env, args.getAll());
+        return new Value(c);
     }
 }

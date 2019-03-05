@@ -31,17 +31,26 @@ public class AstArgs implements Ast {
     // }
 
 
-    Ast arg;
-    Ast args;
+    AstArg arg;
+    AstArgs args;
 
-    AstArgs(Ast arg, Ast args) {
+    AstArgs(AstArg arg, AstArgs args) {
         this.arg = arg;
         this.args = args;
     }
 
-    AstArgs(Ast arg) {
+    AstArgs(AstArg arg) {
         this.arg = arg;
         this.args = null;
+    }
+
+    public ArrayList<String> getAll(){
+        ArrayList<String> res = new ArrayList<>();
+        res.add(arg.getName());
+        if(args != null){
+            res.addAll(args.getAll());
+        }
+        return res;
     }
 
     public String toPrologString() {

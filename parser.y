@@ -41,7 +41,7 @@ cmds:
 ;
 dec:
     CONST IDENT type expr { $$ = new AstConst(new AstIdent($2), (Ast)$3, (IASTExpr)$4);}
-    |   FUN IDENT type LBRA args RBRA expr { $$ = new AstFun(new AstIdent($2), (Ast)$3, (Ast)$5, (IASTExpr)$7);}
+    |   FUN IDENT type LBRA args RBRA expr { $$ = new AstFun(new AstIdent($2), (Ast)$3, (AstArgs)$5, (IASTExpr)$7);}
     |   FUN REC IDENT type LBRA args RBRA expr { $$ = new AstFunRec(new AstIdent($3), (Ast)$4, (Ast)$6, (IASTExpr)$8);}
 ;
 
@@ -56,8 +56,8 @@ arg:
 
 args:
     // arg {$$ = new AstArgs((Ast)$1);}
-    arg {$$ = new AstArgs((Ast)$1);}
-    | arg COMMA args { $$ = new AstArgs((Ast)$1, (Ast)$3);}
+    arg {$$ = new AstArgs((AstArg)$1);}
+    | arg COMMA args { $$ = new AstArgs((AstArg)$1, (AstArgs)$3);}
 ;
 
 type:
@@ -85,8 +85,8 @@ expr:
     |   LPAR SUB exprs RPAR { $$ = new AstPrim(Op.SUB , (AstExprs)$3);}
     |   LPAR MUL exprs RPAR { $$ = new AstPrim(Op.MUL , (AstExprs)$3);}
     |   LPAR DIV exprs RPAR { $$ = new AstPrim(Op.DIV , (AstExprs)$3);}
-    |   LBRA args RBRA expr { $$ = new AstAbs((Ast)$2, (IASTExpr)$4);}
-    |   LPAR expr exprs RPAR { $$ = new AstApp((IASTExpr)$2, (Ast)$3);}
+    |   LBRA args RBRA expr { $$ = new AstAbs((AstArgs)$2, (IASTExpr)$4);}
+    |   LPAR expr exprs RPAR { $$ = new AstApp((IASTExpr)$2, (AstExprs)$3);}
     |   LPAR IF expr expr expr RPAR { $$ = new AstIf((IASTExpr)$3, (IASTExpr)$4, (IASTExpr)$5);}
 ;
 
