@@ -42,7 +42,7 @@ cmds:
 dec:
     CONST IDENT type expr { $$ = new AstConst(new AstIdent($2), (Ast)$3, (IASTExpr)$4);}
     |   FUN IDENT type LBRA args RBRA expr { $$ = new AstFun(new AstIdent($2), (Ast)$3, (AstArgs)$5, (IASTExpr)$7);}
-    |   FUN REC IDENT type LBRA args RBRA expr { $$ = new AstFunRec(new AstIdent($3), (Ast)$4, (Ast)$6, (IASTExpr)$8);}
+    |   FUN REC IDENT type LBRA args RBRA expr { $$ = new AstFunRec(new AstIdent($3), (Ast)$4, (AstArgs)$6, (IASTExpr)$8);}
 ;
 
 stat: 

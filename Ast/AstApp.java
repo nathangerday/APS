@@ -20,7 +20,9 @@ public class AstApp implements IASTExpr {
 
         if(fun.getF() != null){
             return fun.getF().eval(valOfArgs);
-        } 
+        }else if(fun.getFR() != null){
+            return fun.getFR().getClosure(fun).eval(valOfArgs);
+        }
 
         return null;
     }
