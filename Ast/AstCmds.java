@@ -21,7 +21,6 @@ public class AstCmds implements IASTCmds{
     }
 
     public OutStream eval(Environment env, OutStream o){
-        //TODO Check eval
         if(a1 instanceof IASTStat){
             o = ((IASTStat)a1).eval(env, o);
         }else if(a1 instanceof IASTDec){

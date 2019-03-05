@@ -19,9 +19,11 @@ public class AstPrim implements IASTExpr {
     public Value eval(Environment env){
         ArrayList<Value> vals = exprs.eval(env);
         Integer tmpval1;
-        Integer tmpval2;
+        Integer tmpval2 = null;
         tmpval1 = vals.get(0).getN();
-        tmpval2 = vals.get(1).getN();
+        if(op != Op.NOT){
+            tmpval2 = vals.get(1).getN();
+        }
         
         switch(op){
             case ADD:

@@ -11,8 +11,6 @@ public class Closure{
         this.args = args;
     }
 
-    //TODO Eval directly here ? Would need to give an ArrayList<Value> for args probably
-
     public Value eval(ArrayList<Value> valOfArgs){
         Environment copyEnv = new Environment(env);
         if(args.size() != valOfArgs.size()){

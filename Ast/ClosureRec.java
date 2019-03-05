@@ -13,8 +13,6 @@ public class ClosureRec{
         this.name = name;
     }
 
-    //TODO Eval directly here ? Would need to give an ArrayList<Value> for args probably
-
     public Closure getClosure(Value fr){
         Environment newenv = new Environment(env);
         newenv.add(name, fr);

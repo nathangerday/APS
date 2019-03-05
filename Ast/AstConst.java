@@ -15,7 +15,6 @@ public class AstConst implements IASTDec {
     }
 
     public Environment eval(Environment env){
-        //TODO Check Eval
         if(name instanceof AstIdent){
             Environment newenv = new Environment(env); //Copy the environment, we don't want to change it directly
             newenv.add(((AstIdent)name).getString(), expr.eval(env));

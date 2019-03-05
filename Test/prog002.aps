@@ -1,8 +1,4 @@
 [
   CONST x int 42;
-  CONST y int 422;
-  CONST e int 423;
-  CONST a int 424;
-  CONST s int 425;
-  ECHO s
+  ECHO x
 ]

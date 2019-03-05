@@ -1,0 +1,4 @@
+[
+    FUN f int [c:bool,a:int,b:int] (if c a b);
+    ECHO (f false 1 4)
+]
