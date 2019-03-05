@@ -14,6 +14,12 @@ public class AstIf implements IASTExpr {
     }
 
     public Value eval(Environment env){
+        Integer c = cond.eval(env).getN();
+        if(c == 1){
+            return then.eval(env);
+        }else if(c == 0){
+            return e.eval(env);
+        }
         return null;
     }
 }

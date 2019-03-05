@@ -46,7 +46,11 @@ public class AstPrim implements IASTExpr {
             case EQ:
                 return new Value(1);
             case LT:
-                return new Value(1);
+                if(val1 < val2){
+                    return new Value(1);
+                }else{
+                    return new Value(0);
+                }
         }
         return null;
     }
