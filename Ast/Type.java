@@ -1,5 +1,5 @@
 public enum Type {
-    INT("int"), BOOL("bool");
+    INT("int"), BOOL("bool"), VOID("void");
     private String str;
 
     Type(String str) {
