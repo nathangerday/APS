@@ -24,3 +24,26 @@ for i in range(18):
     except:
         print("Error on type check")
         continue
+
+for i in range(21):
+    file = "Test1/prog1"+str(i).zfill(2)+".aps"
+    print("Running test : " + file + " ... ", end='')
+    try:
+        parsed = str(s.check_output(["java", "-cp", "bin/", "ToProlog", file], stderr=s.STDOUT ))
+    except:
+        print("File probably not found or can't be opened : " + file)
+        continue
+
+    if "error" in str(parsed).lower():
+        print("Error when parsing")
+        continue
+
+
+    parsed = parsed[2:len(parsed)-3]
+
+    try:
+        parsed = str(s.check_output(["swipl", "-s", "Typage/prog.pl", parsed ], stderr=s.STDOUT ))
+        print("OK")
+    except:
+        print("Error on type check")
+        continue
