@@ -11,7 +11,7 @@ file = sys.argv[1]
 
 # ================= Generate ToProlog ================= # 
 try:
-    parsed = str(s.check_output(["java", "-cp", "bin/", "ToProlog", file], stderr=s.STDOUT ))
+    parsed = str(s.check_output(["java", "-cp", "bin/", "aps.parser.ToProlog", file], stderr=s.STDOUT ))
 except:
     print("File probably not found or can't be opened : " + file)
     exit(1)
@@ -31,4 +31,4 @@ except:
 
 
 # ================= Eval ================= # 
-print(str(s.check_output(["java", "-cp", "bin/", "Eval", file], stderr=s.STDOUT ).decode("utf-8")))
+print(str(s.check_output(["java", "-cp", "bin/", "aps.parser.Eval", file], stderr=s.STDOUT ).decode("utf-8")))

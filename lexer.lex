@@ -1,8 +1,11 @@
+package aps.parser;
+
 %%
 
 %byaccj
 
 %{
+
     private Parser yyparser;
         public Yylex(java.io.Reader r, Parser yyparser) {
             this(r);

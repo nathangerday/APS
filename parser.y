@@ -1,5 +1,6 @@
 %{
 import java.io.*;
+import aps.ast.*;
 %}
 
 %token NL /* newline */
@@ -110,7 +111,7 @@ exprs:
 
 public AstCmds prog;
 private Yylex lexer;
-private int yylex () {
+public int yylex () {
     int yyl_return = -1;
     try {
         yylval = new ParserVal(0);

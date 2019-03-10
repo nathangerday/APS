@@ -6,7 +6,7 @@ for i in range(18):
     file = "prog"+str(i).zfill(3)+".aps"
     print("Running test : " + file + " ... ", end='')
     try:
-        parsed = str(s.check_output(["java", "-cp", "bin/", "ToProlog", "Test/"+file], stderr=s.STDOUT ))
+        parsed = str(s.check_output(["java", "-cp", "bin/", "aps.parser.ToProlog", "Test/"+file], stderr=s.STDOUT ))
     except:
         print("File probably not found or can't be opened : " + file)
         continue
@@ -29,7 +29,7 @@ for i in range(21):
     file = "Test1/prog1"+str(i).zfill(2)+".aps"
     print("Running test : " + file + " ... ", end='')
     try:
-        parsed = str(s.check_output(["java", "-cp", "bin/", "ToProlog", file], stderr=s.STDOUT ))
+        parsed = str(s.check_output(["java", "-cp", "bin/", "aps.parser.ToProlog", file], stderr=s.STDOUT ))
     except:
         print("File probably not found or can't be opened : " + file)
         continue
