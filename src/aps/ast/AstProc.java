@@ -17,7 +17,7 @@ public class AstProc implements IASTDec{
 
     @Override
     public Context eval(Context con) {
-        ProceduralClosure pc = new ProceduralClosure(block, con.getEnv(), con.getMem(), args.getAll());
+        ProceduralClosure pc = new ProceduralClosure(block, con.getEnv(), args.getAll());
         if(name instanceof AstIdent){
             Environment newenv = new Environment(con.getEnv());
             Memory newmem = new Memory(con.getMem());

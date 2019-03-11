@@ -21,9 +21,9 @@ public class AstCall implements IASTStat {
             ArrayList<Value> valOfArgs = args.eval(env, mem);
 
             if(proc.getP() != null){
-                return proc.getP().eval(valOfArgs);
+                return proc.getP().eval(valOfArgs, mem);
             }else if(proc.getPR() != null){
-                return proc.getPR().getProceduralClosure(proc).eval(valOfArgs);
+                return proc.getPR().getProceduralClosure(proc).eval(valOfArgs, mem);
             }
         }
         return null;

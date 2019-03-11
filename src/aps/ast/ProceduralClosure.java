@@ -5,17 +5,15 @@ import java.util.ArrayList;
 public class ProceduralClosure{
     AstCmds block;
     Environment env;
-    Memory mem;
     ArrayList<String> args;
 
-	public ProceduralClosure(AstCmds block, Environment env, Memory mem, ArrayList<String> args) {
+	public ProceduralClosure(AstCmds block, Environment env, ArrayList<String> args) {
         this.block = block;
         this.env = env;
-        this.mem = mem;
         this.args = args;
 	}
     
-    public Memory eval(ArrayList<Value> valOfArgs){
+    public Memory eval(ArrayList<Value> valOfArgs, Memory mem){
         Environment copyEnv = new Environment(env);
         Memory copyMem = new Memory(mem);
 
