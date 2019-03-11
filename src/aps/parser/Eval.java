@@ -21,8 +21,8 @@ public class Eval{
         }
 
         Environment env = new Environment();
-        OutStream o = new OutStream();
-        prog.eval(env, o);
+        Memory mem = new Memory();
+        prog.eval(env, mem);
         // OutStream res = prog.eval(env, o);
         // res.print();
     }

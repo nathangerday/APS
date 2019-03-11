@@ -17,13 +17,13 @@ public class AstFunRec implements IASTDec {
         return "funrec("+name.toPrologString()+","+ type.toPrologString()+","+ args.toPrologString() +"," + expr.toPrologString() +")";
     }
 
-
-    public Environment eval(Environment env){
+    public Context eval(Context con) {
         if(name instanceof AstIdent){
-            ClosureRec fr = new ClosureRec(((AstIdent)name).getString(), expr, env, args.getAll());
-            Environment newenv = new Environment(env);
+            ClosureRec fr = new ClosureRec(((AstIdent)name).getString(), expr, con.getEnv(), con.getMem(), args.getAll());
+            Environment newenv = new Environment(con.getEnv());
+            Memory newmem = new Memory(con.getMem());
             newenv.add(((AstIdent)name).getString(), new Value(fr));
-            return newenv;
+            return new Context(newenv, newmem);
         }
         return null;
     }

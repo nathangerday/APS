@@ -9,12 +9,20 @@ public class AstSet implements IASTStat{
     }
 
 
-    public OutStream eval(Environment env, OutStream o){
-        return null;
-    }
-
-
     public String toPrologString(){
         return "set("+name.toPrologString()+","+expr.toPrologString()+")";
+    }
+
+    public Memory eval(Environment env, Memory mem) {
+        if(name instanceof AstIdent){
+            Address a;
+            if((a = env.get(((AstIdent)name).getString()).getA()) != null){
+                Memory newmem = new Memory(mem);
+                newmem.mutate(a, expr.eval(env, mem));
+                return newmem;
+            }
+        }
+
+        return null;
     }
 }

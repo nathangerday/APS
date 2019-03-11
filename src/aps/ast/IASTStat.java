@@ -1,4 +1,4 @@
 package aps.ast;
 public interface IASTStat extends Ast{
-    public OutStream eval(Environment env, OutStream o);
+    public Memory eval(Environment env, Memory mem);
 }

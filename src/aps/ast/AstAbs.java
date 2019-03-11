@@ -13,7 +13,7 @@ public class AstAbs implements IASTExpr {
     }
 
     public Value eval(Environment env, Memory mem){
-        Closure c = new Closure(expr, env, args.getAll());
+        Closure c = new Closure(expr, env, mem, args.getAll());
         return new Value(c);
     }
 }

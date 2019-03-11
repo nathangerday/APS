@@ -21,16 +21,20 @@ public class AstCmds implements IASTCmds{
         }
     }
 
-    public OutStream eval(Environment env, OutStream o){
+
+    public Memory eval(Environment env, Memory mem) {
+        
         if(a1 instanceof IASTStat){
-            o = ((IASTStat)a1).eval(env, o);
+            mem = ((IASTStat)a1).eval(env, mem);
         }else if(a1 instanceof IASTDec){
-            env = ((IASTDec)a1).eval(env);
+            Context con = ((IASTDec)a1).eval(new Context(env, mem));
+            env = con.getEnv();
+            mem = con.getMem();
         }
         if(a2 != null){
-            return a2.eval(env, o);
+            return a2.eval(env, mem);
         }else{
-            return o;
+            return mem;
         }
     }
 

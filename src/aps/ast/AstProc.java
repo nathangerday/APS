@@ -11,12 +11,19 @@ public class AstProc implements IASTDec{
     }
 
 
-    public Environment eval(Environment env){
-        return null;
-    }
-
-
     public String toPrologString(){
         return "proc("+name.toPrologString()+","+args.toPrologString()+","+block.toPrologString() + ")";
+    }
+
+    @Override
+    public Context eval(Context con) {
+        ProceduralClosure pc = new ProceduralClosure(block, con.getEnv(), con.getMem(), args.getAll());
+        if(name instanceof AstIdent){
+            Environment newenv = new Environment(con.getEnv());
+            Memory newmem = new Memory(con.getMem());
+            newenv.add(((AstIdent)name).getString(), new Value(pc)); 
+            return new Context(newenv, newmem);
+        }
+        return null;
     }
 }

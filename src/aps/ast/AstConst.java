@@ -15,11 +15,12 @@ public class AstConst implements IASTDec {
         return "const("+name.toPrologString()+","+ type.toPrologString()+"," + expr.toPrologString() +")";
     }
 
-    public Environment eval(Environment env){
+    public Context eval(Context con) {
         if(name instanceof AstIdent){
-            Environment newenv = new Environment(env); //Copy the environment, we don't want to change it directly
-            newenv.add(((AstIdent)name).getString(), expr.eval(env));
-            return newenv;
+            Environment newenv = new Environment(con.getEnv()); //Copy the environment, we don't want to change it directly
+            Memory newmem = new Memory(con.getMem());
+            newenv.add(((AstIdent)name).getString(), expr.eval(con.getEnv(), con.getMem()));
+            return new Context(newenv, newmem);
         }
         return null;
     }

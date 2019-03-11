@@ -286,7 +286,7 @@ convertTypesToProlog(X, [R]) :-
 % G = [("f", [[int, int], bool]),  ("a", int)] .
 
 % ================= ONE LINER =================
-% java -cp bin/ ToProlog < Test/APS0_01.aps | awk '{print $1"."}' | swipl -s Typage/prog.pl -g main_stdin
+% java -cp bin/ aps.parser.ToProlog < Test/APS0_01.aps | awk '{print $1"."}' | swipl -s Typage/prog.pl -g main_stdin
 % =============================================
 
 %% EXAMPLE TO USE exprs IN PRIM

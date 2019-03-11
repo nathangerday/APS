@@ -1,4 +1,4 @@
 package aps.ast;
 public interface IASTCmds extends Ast{
-    public OutStream eval(Environment env, OutStream o);
+    public Memory eval(Environment env, Memory mem);
 }

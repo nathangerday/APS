@@ -17,15 +17,15 @@ public class AstFun implements IASTDec {
         return "fun("+name.toPrologString()+","+ type.toPrologString()+","+ args.toPrologString() +"," + expr.toPrologString() +")";
     }
 
-
-    public Environment eval(Environment env){
-        Closure c = new Closure(expr, env, args.getAll());
+ 
+    public Context eval(Context con) {
+        Closure c = new Closure(expr, con.getEnv(), con.getMem(), args.getAll());
         if(name instanceof AstIdent){
-            Environment newenv = new Environment(env);
+            Environment newenv = new Environment(con.getEnv());
+            Memory newmem = new Memory(con.getMem());
             newenv.add(((AstIdent)name).getString(), new Value(c));
-            return newenv;
+            return new Context(newenv, newmem);
         }
         return null;
-        
     }
 }
