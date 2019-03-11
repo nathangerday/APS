@@ -15,9 +15,9 @@ public class AstApp implements IASTExpr {
     }
 
 
-    public Value eval(Environment env){
-        Value fun = f.eval(env);
-        ArrayList<Value> valOfArgs = args.eval(env);
+    public Value eval(Environment env, Memory mem){
+        Value fun = f.eval(env, mem);
+        ArrayList<Value> valOfArgs = args.eval(env, mem);
 
         if(fun.getF() != null){
             return fun.getF().eval(valOfArgs);

@@ -12,7 +12,7 @@ public class AstNum implements IASTExpr {
     }
 
 
-    public Value eval(Environment env){
+    public Value eval(Environment env, Memory mem){
         return new Value(val);
     }
     

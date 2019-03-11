@@ -17,8 +17,8 @@ public class AstPrim implements IASTExpr {
     }
 
 
-    public Value eval(Environment env){
-        ArrayList<Value> vals = exprs.eval(env);
+    public Value eval(Environment env, Memory mem){
+        ArrayList<Value> vals = exprs.eval(env,mem);
         Integer tmpval1;
         Integer tmpval2 = null;
         tmpval1 = vals.get(0).getN();

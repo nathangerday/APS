@@ -1,4 +1,4 @@
 package aps.ast;
 public interface IASTDec extends Ast{
-    public Environment eval(Environment env);
+    public Context eval(Context con);
 }

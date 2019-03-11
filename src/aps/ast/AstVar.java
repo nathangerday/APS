@@ -8,7 +8,15 @@ public class AstVar implements IASTDec{
         this.type = type;
     }
 
-    public Environment eval(Environment env){
+    public Context eval(Context con){
+        if(name instanceof AstIdent){
+            Environment newenv = new Environment(con.getEnv());
+            Memory newmem = new Memory(con.getMem());
+
+            Address a = newmem.alloc();
+            newenv.add(((AstIdent)name).getString(), new Value(a));
+            return new Context(newenv, newmem);
+        }
         return null;
     }
 

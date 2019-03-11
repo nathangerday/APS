@@ -17,7 +17,18 @@ public class AstIdent implements IASTExpr {
     }
 
 
-    public Value eval(Environment env){
+    public Value eval(Environment env, Memory mem){
+        Address a;
+        if((a = env.get(name).getA()) != null){
+            Value v = mem.get(a);
+            if(v != null && v.getN() != null){
+                return v;
+            }
+
+            //If not initialized or not an N, error
+            throw new RuntimeException("Error, bad value in : "+this.name);
+        }
+
         return env.get(name);
     }
 }

@@ -1,4 +1,4 @@
 package aps.ast;
 public interface IASTExpr extends Ast{
-    public Value eval(Environment env);
+    public Value eval(Environment env, Memory mem);
 }

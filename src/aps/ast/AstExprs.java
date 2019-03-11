@@ -30,10 +30,10 @@ public class AstExprs implements Ast {
 
     }
   
-    public ArrayList<Value> eval(Environment env){
+    public ArrayList<Value> eval(Environment env, Memory mem){
         ArrayList<Value> res = new ArrayList<>();
         for(IASTExpr e : exprs){
-            res.add(e.eval(env));
+            res.add(e.eval(env, mem));
         }
         return res;
     }
