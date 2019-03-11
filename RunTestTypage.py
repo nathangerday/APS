@@ -20,7 +20,7 @@ for i in range(18):
 
     try:
         parsed = str(s.check_output(["swipl", "-s", "Typage/prog.pl", parsed ], stderr=s.STDOUT ))
-        print("OK")
+        print("OK", flush=True)
     except:
         print("Error on type check")
         continue
@@ -43,7 +43,7 @@ for i in range(21):
 
     try:
         parsed = str(s.check_output(["swipl", "-s", "Typage/prog.pl", parsed ], stderr=s.STDOUT ))
-        print("OK")
+        print("OK", flush=True)
     except:
         print("Error on type check")
         continue

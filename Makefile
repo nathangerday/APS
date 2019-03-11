@@ -14,7 +14,6 @@ eval: parser src/aps/parser/Eval.java
 parser: parser.y lexer.lex
 	$(LEX_J) lexer.lex -d src/aps/parser/
 	$(YACC_J) parser.y 
-	# How to generate file with byacc directly in bin ?
 	mv Parser.java src/aps/parser/Parser.java 
 	mv ParserVal.java src/aps/parser/ParserVal.java
 clean:
