@@ -10,9 +10,6 @@ public class Memory{
         memory = new HashMap<>();
     }
 
-    public Memory(Memory other){
-        this.memory = new HashMap<>(other.memory);
-    }
     
     public Address alloc(){
         Address a = new Address();

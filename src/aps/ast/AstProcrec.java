@@ -19,9 +19,8 @@ public class AstProcrec implements IASTDec{
         if(name instanceof AstIdent) {
             ProceduralClosureRec pcr = new ProceduralClosureRec(((AstIdent)name).getString(), block, con.getEnv(), args.getAll());
             Environment newenv = new Environment(con.getEnv());
-            Memory newmem = new Memory(con.getMem());
             newenv.add(((AstIdent)name).getString(), new Value(pcr));
-            return new Context(newenv, newmem);
+            return new Context(newenv, con.getMem());
         }
         return null;
     }

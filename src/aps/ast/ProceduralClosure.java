@@ -15,7 +15,6 @@ public class ProceduralClosure{
     
     public Memory eval(ArrayList<Value> valOfArgs, Memory mem){
         Environment copyEnv = new Environment(env);
-        Memory copyMem = new Memory(mem);
 
         if(args.size() != valOfArgs.size()){
             throw new RuntimeException("Different size in function application");
@@ -26,7 +25,7 @@ public class ProceduralClosure{
             copyEnv.add(args.get(i), valOfArgs.get(i));
         }
 
-        return block.eval(copyEnv, copyMem);
+        return block.eval(copyEnv, mem);
 
     }
 }

@@ -20,9 +20,8 @@ public class AstProc implements IASTDec{
         ProceduralClosure pc = new ProceduralClosure(block, con.getEnv(), args.getAll());
         if(name instanceof AstIdent){
             Environment newenv = new Environment(con.getEnv());
-            Memory newmem = new Memory(con.getMem());
             newenv.add(((AstIdent)name).getString(), new Value(pc)); 
-            return new Context(newenv, newmem);
+            return new Context(newenv, con.getMem());
         }
         return null;
     }

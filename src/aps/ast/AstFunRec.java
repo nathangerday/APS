@@ -19,11 +19,10 @@ public class AstFunRec implements IASTDec {
 
     public Context eval(Context con) {
         if(name instanceof AstIdent){
-            ClosureRec fr = new ClosureRec(((AstIdent)name).getString(), expr, con.getEnv(), con.getMem(), args.getAll());
+            ClosureRec fr = new ClosureRec(((AstIdent)name).getString(), expr, con.getEnv(), args.getAll());
             Environment newenv = new Environment(con.getEnv());
-            Memory newmem = new Memory(con.getMem());
             newenv.add(((AstIdent)name).getString(), new Value(fr));
-            return new Context(newenv, newmem);
+            return new Context(newenv, con.getMem());
         }
         return null;
     }

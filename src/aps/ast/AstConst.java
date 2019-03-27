@@ -18,9 +18,8 @@ public class AstConst implements IASTDec {
     public Context eval(Context con) {
         if(name instanceof AstIdent){
             Environment newenv = new Environment(con.getEnv()); //Copy the environment, we don't want to change it directly
-            Memory newmem = new Memory(con.getMem());
             newenv.add(((AstIdent)name).getString(), expr.eval(con.getEnv(), con.getMem()));
-            return new Context(newenv, newmem);
+            return new Context(newenv, con.getMem());
         }
         return null;
     }

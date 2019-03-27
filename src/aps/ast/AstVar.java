@@ -11,11 +11,10 @@ public class AstVar implements IASTDec{
     public Context eval(Context con){
         if(name instanceof AstIdent){
             Environment newenv = new Environment(con.getEnv());
-            Memory newmem = new Memory(con.getMem());
 
-            Address a = newmem.alloc();
+            Address a = con.getMem().alloc();
             newenv.add(((AstIdent)name).getString(), new Value(a));
-            return new Context(newenv, newmem);
+            return new Context(newenv, con.getMem());
         }
         return null;
     }

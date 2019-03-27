@@ -19,12 +19,11 @@ public class AstFun implements IASTDec {
 
  
     public Context eval(Context con) {
-        Closure c = new Closure(expr, con.getEnv(), con.getMem(), args.getAll());
+        Closure c = new Closure(expr, con.getEnv(), args.getAll());
         if(name instanceof AstIdent){
             Environment newenv = new Environment(con.getEnv());
-            Memory newmem = new Memory(con.getMem());
             newenv.add(((AstIdent)name).getString(), new Value(c));
-            return new Context(newenv, newmem);
+            return new Context(newenv, con.getMem());
         }
         return null;
     }
