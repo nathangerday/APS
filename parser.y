@@ -1,5 +1,6 @@
 %{
 import java.io.*;
+import aps.ast.*;
 %}
 
 %token NL /* newline */
@@ -9,7 +10,7 @@ import java.io.*;
 %token LPAR RPAR /* parethesis */
 %token LBRA RBRA /* brackets */
 %token COLON SEMICOLON STAR ARROW COMMA /* Symbols */
-%token CONST FUN REC ECHO INT BOOL TRUE FALSE NOT AND OR EQ LT IF /* Keywords */
+%token CONST FUN REC ECHO INT BOOL TRUE FALSE VOID NOT AND OR EQ LT IF VAR PROC SET IF WHILE CALL /* Keywords */
 
 %left MINUS PLUS
 %left TIMES DIV
@@ -24,6 +25,7 @@ import java.io.*;
 %type <obj> stat
 %type <obj> dec
 %type <obj> cmds
+%type <obj> block
 %type <obj> prog
 
 %start prog
@@ -31,8 +33,11 @@ import java.io.*;
 %%
 
 prog:
-    LBRA cmds RBRA { prog=(AstCmds)$2; $$=(AstCmds)$2; }
+    block { prog=(AstCmds)$1; }
 ;
+
+block:
+    LBRA cmds RBRA { $$ = (AstCmds)$2; }
 
 cmds:
     stat { $$ = new AstCmds((Ast)$1); }
@@ -43,10 +48,17 @@ dec:
     CONST IDENT type expr { $$ = new AstConst(new AstIdent($2), (Ast)$3, (IASTExpr)$4);}
     |   FUN IDENT type LBRA args RBRA expr { $$ = new AstFun(new AstIdent($2), (Ast)$3, (AstArgs)$5, (IASTExpr)$7);}
     |   FUN REC IDENT type LBRA args RBRA expr { $$ = new AstFunRec(new AstIdent($3), (Ast)$4, (AstArgs)$6, (IASTExpr)$8);}
+    |   VAR IDENT type {$$ = new AstVar(new AstIdent($2), (Ast)$3); }
+    |   PROC IDENT LBRA args RBRA block {$$ = new AstProc(new AstIdent($2), (AstArgs)$4, (AstCmds)$6 );}
+    |   PROC REC IDENT LBRA args RBRA block {$$ = new AstProcrec(new AstIdent($3), (AstArgs)$5, (AstCmds)$7 );}
 ;
 
 stat: 
     ECHO expr { $$ = new AstEcho((IASTExpr)$2); }
+    |   SET IDENT expr  { $$ = new AstSet(new AstIdent($2), (IASTExpr)$3);}
+    |   IF expr block block { $$ = new AstAlternative((IASTExpr)$2, (AstCmds)$3, (AstCmds)$4);}
+    |   WHILE expr block { $$ = new AstWhile((IASTExpr)$2, (AstCmds)$3);}
+    |   CALL IDENT exprs { $$ = new AstCall(new AstIdent($2), (AstExprs)$3);}
 ;
 
 
@@ -61,8 +73,9 @@ args:
 ;
 
 type:
-    INT { $$ = new AstType(Type.INT); }
-    | BOOL { $$ = new AstType(Type.BOOL); }
+    INT { $$ = new AstType(Type.INT); } 
+    | BOOL { $$ = new AstType(Type.BOOL); } 
+    | VOID { $$ = new AstType(Type.VOID); }
     | LPAR types ARROW type RPAR { $$ = new AstArrow((Ast)$2, (Ast)$4); }
 ;
 
@@ -98,7 +111,7 @@ exprs:
 
 public AstCmds prog;
 private Yylex lexer;
-private int yylex () {
+public int yylex () {
     int yyl_return = -1;
     try {
         yylval = new ParserVal(0);

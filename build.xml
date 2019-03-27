@@ -1,0 +1,22 @@
+<project name="APS" default="compile" basedir=".">
+    <property name="src" location="src"/>
+    <property name="build" location="bin"/>
+    <target name="init">
+        <mkdir dir="${build}"/>
+    </target>
+    <!-- <target name="run">
+        <java classname="aps.parser.ToProlog" classpath="${build}"></java>
+    </target> -->
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${build}"/>
+    </target>
+    <target name="clean">
+        <delete dir="${build}"/>    
+        <delete dir="${dist}"/>
+    </target>
+    <target name="test">
+        <exec executable="python3">
+            <arg value="RunTestTypage.py"/>
+        </exec>
+    </target>
+</project>

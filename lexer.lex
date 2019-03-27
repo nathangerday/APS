@@ -1,8 +1,11 @@
+package aps.parser;
+
 %%
 
 %byaccj
 
 %{
+
     private Parser yyparser;
         public Yylex(java.io.Reader r, Parser yyparser) {
             this(r);
@@ -54,6 +57,14 @@ sep = [\n | \t | ' ']
 "eq" {return Parser.EQ;}
 "lt" {return Parser.LT;}
 "if" {return Parser.IF;}
+
+"void" {return Parser.VOID;} /* //TODO Le sujet ne demande pas de voir ici */
+"VAR"  {return Parser.VAR;}
+"PROC" {return Parser.PROC;}
+"SET" {return Parser.SET;}
+"IF" {return Parser.IF;}
+"WHILE" {return Parser.WHILE;}
+"CALL" {return Parser.CALL;}
 
 
 /* newline */

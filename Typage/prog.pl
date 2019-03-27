@@ -78,6 +78,9 @@ typeType(X) :-
 typeType(X) :-
     X = int.
 
+typeType(X) :-
+    X = void.
+
 typeType(arrow(X, Y)) :-
     typeTypes(X),
     typeType(Y).
@@ -94,6 +97,29 @@ typeTypes(star(X, Y)) :-
 
 typeInst(G, echo(X), void) :-
     typeExpr(G, X, int).
+
+typeInst(G, set(Name, Expr), void) :-
+    typeExpr(G, Expr, EType),
+    assoc(Name, G, NType),
+    compare(=, EType, NType).
+
+
+typeInst(G, alternative(Cond, Block1, Block2), void) :-
+    typeExpr(G, Cond, bool),
+    typeCmds(G, Block1, void),
+    typeCmds(G, Block2, void).
+
+typeInst(G, while(Cond, Block), void) :-
+    typeExpr(G, Cond, bool),
+    typeCmds(G, Block, void).
+
+
+typeInst(G, call(Name, Exprs), void) :-
+    typeExprs(G, Exprs, TE),
+    assoc(Name, G, [T | [void]]),
+    compare(=, T, TE).
+    
+
 
 % Declaration
 
@@ -122,6 +148,27 @@ typeDec(G, funrec(Name, Type, Args, Expr), GP) :-
     append([(Name, [TS | [NType]])], NNG, NNNG), % Ajout de la fonction actuellement définie dans le contexte pour verifier la recursion
     typeExpr(NNNG, Expr, Type),
     append([(Name, [TS | [NType]])], G, GP).
+
+
+typeDec(G, var(Name, Type), NG) :-
+    typeType(Type),
+    convertTypeToProlog(Type, NType),
+    append([(Name, NType)], G, NG).
+
+typeDec(G, proc(Name, Args, Block), GP) :-
+    typeArgs([], Args, NG),
+    extract_types(NG, TS),
+    append(NG, G, NNG),
+    typeCmds(NNG, Block, void),
+    append([(Name, [TS | [void]])], G, GP).
+
+typeDec(G, procrec(Name, Args, Block), GP) :-
+    typeArgs([], Args, NG),
+    extract_types(NG, TS),
+    append(NG, G, NNG),
+    append([(Name, [TS | [void]])], NNG, NNNG),
+    typeCmds(NNNG, Block, void),
+    append([(Name, [TS | [void]])], G, GP).
 
 
 % Commands
@@ -239,7 +286,7 @@ convertTypesToProlog(X, [R]) :-
 % G = [("f", [[int, int], bool]),  ("a", int)] .
 
 % ================= ONE LINER =================
-% java -cp bin/ ToProlog < Test/APS0_01.aps | awk '{print $1"."}' | swipl -s Typage/prog.pl -g main_stdin
+% java -cp bin/ aps.parser.ToProlog < Test/APS0_01.aps | awk '{print $1"."}' | swipl -s Typage/prog.pl -g main_stdin
 % =============================================
 
 %% EXAMPLE TO USE exprs IN PRIM
