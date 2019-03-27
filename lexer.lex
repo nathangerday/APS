@@ -26,6 +26,11 @@ sep = [\n | \t | ' ']
 "mul" { return Parser.MUL; }
 "div" { return Parser.DIV; }
 
+"len" { return Parser.LEN; } 
+"nth" { return Parser.NTH; }
+"alloc" { return Parser.ALLOC; }
+
+
 /* parenthesis */
 "(" { return Parser.LPAR; }
 ")" { return Parser.RPAR; }
@@ -49,6 +54,7 @@ sep = [\n | \t | ' ']
 
 "int" {return Parser.INT;}
 "bool" {return Parser.BOOL;}
+"vec" {return Parser.VEC;}
 "true" {return Parser.TRUE;}
 "false" {return Parser.FALSE;}
 "not" {return Parser.NOT;}

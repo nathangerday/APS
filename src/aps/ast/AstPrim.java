@@ -25,7 +25,7 @@ public class AstPrim implements IASTExpr {
         if(op != Op.NOT){
             tmpval2 = vals.get(1).getN();
         }
-        
+        //TODO add LEN et ALLOC
         switch(op){
             case ADD:
                 return new Value(tmpval1+tmpval2);

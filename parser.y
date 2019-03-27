@@ -7,10 +7,11 @@ import aps.ast.*;
 %token <ival> NUM /* a number */
 %token <sval> IDENT /* an identifier */
 %token ADD SUB MUL DIV /* operators */
+%token LEN NTH ALLOC
 %token LPAR RPAR /* parethesis */
 %token LBRA RBRA /* brackets */
 %token COLON SEMICOLON STAR ARROW COMMA /* Symbols */
-%token CONST FUN REC ECHO INT BOOL TRUE FALSE VOID NOT AND OR EQ LT IF VAR PROC SET IF WHILE CALL /* Keywords */
+%token CONST FUN REC ECHO INT BOOL VEC TRUE FALSE VOID NOT AND OR EQ LT IF VAR PROC SET IF WHILE CALL /* Keywords */
 
 %left MINUS PLUS
 %left TIMES DIV
@@ -26,6 +27,7 @@ import aps.ast.*;
 %type <obj> dec
 %type <obj> cmds
 %type <obj> block
+%type <obj> lval
 %type <obj> prog
 
 %start prog
@@ -55,12 +57,17 @@ dec:
 
 stat: 
     ECHO expr { $$ = new AstEcho((IASTExpr)$2); }
-    |   SET IDENT expr  { $$ = new AstSet(new AstIdent($2), (IASTExpr)$3);}
+    |   SET lval expr  { $$ = new AstSet((IASTLval)$2, (IASTExpr)$3);}
     |   IF expr block block { $$ = new AstAlternative((IASTExpr)$2, (AstCmds)$3, (AstCmds)$4);}
     |   WHILE expr block { $$ = new AstWhile((IASTExpr)$2, (AstCmds)$3);}
     |   CALL IDENT exprs { $$ = new AstCall(new AstIdent($2), (AstExprs)$3);}
 ;
 
+
+lval:
+    IDENT {$$ = new AstIdent($1);}
+    | LPAR NTH lval expr RPAR {$$ = new AstNth((IASTLval)$3, (IASTExpr)$4);}
+;
 
 arg:
     IDENT COLON type { $$ = new AstArg(new AstIdent($1), (Ast)$3);}
@@ -76,6 +83,7 @@ type:
     INT { $$ = new AstType(Type.INT); } 
     | BOOL { $$ = new AstType(Type.BOOL); } 
     | VOID { $$ = new AstType(Type.VOID); }
+    | LPAR VEC type RPAR { $$ = new AstType(Type.VEC); }
     | LPAR types ARROW type RPAR { $$ = new AstArrow((Ast)$2, (Ast)$4); }
 ;
 
@@ -98,6 +106,9 @@ expr:
     |   LPAR SUB exprs RPAR { $$ = new AstPrim(Op.SUB , (AstExprs)$3);}
     |   LPAR MUL exprs RPAR { $$ = new AstPrim(Op.MUL , (AstExprs)$3);}
     |   LPAR DIV exprs RPAR { $$ = new AstPrim(Op.DIV , (AstExprs)$3);}
+    |   LPAR LEN exprs RPAR { $$ = new AstPrim(Op.LEN , (AstExprs)$3);}
+    |   LPAR ALLOC exprs RPAR { $$ = new AstPrim(Op.ALLOC , (AstExprs)$3);}
+    |   LPAR NTH exprs RPAR { $$ = new AstPrim(Op.NTH , (AstExprs)$3);}
     |   LBRA args RBRA expr { $$ = new AstAbs((AstArgs)$2, (IASTExpr)$4);}
     |   LPAR expr exprs RPAR { $$ = new AstApp((IASTExpr)$2, (AstExprs)$3);}
     |   LPAR IF expr expr expr RPAR { $$ = new AstIf((IASTExpr)$3, (IASTExpr)$4, (IASTExpr)$5);}

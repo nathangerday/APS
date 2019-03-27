@@ -1,5 +1,5 @@
 package aps.ast;
-public class AstIdent implements IASTExpr {
+public class AstIdent implements IASTExpr, IASTLval {
     String name;
 
     public AstIdent(String x) {

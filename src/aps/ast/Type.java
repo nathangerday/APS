@@ -1,6 +1,6 @@
 package aps.ast;
 public enum Type {
-    INT("int"), BOOL("bool"), VOID("void");
+    INT("int"), BOOL("bool"), VOID("void"), VEC("vec");
     private String str;
 
     Type(String str) {
