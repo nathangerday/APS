@@ -24,6 +24,12 @@ typeExpr(G, div(exprs(X, exprs(Y, exprs()))), int) :- typeExpr(G, X, int), typeE
 
 typeExpr(G, if(X, Y, Z), T) :- typeExpr(G, X, bool), typeExpr(G, Y, T), typeExpr(G, Z, T).
 
+typeExpr(G, alloc(exprs(X, exprs())), vec(free)) :- typeExpr(G, X, int).
+
+typeExpr(G, nth(exprs(V, exprs(E, exprs()))), T) :- typeExpr(G, V, vec(T)), typeExpr(G, E, int).
+
+typeExpr(G, len(exprs(V, exprs())), int) :- typeExpr(G, V, vec(_)).
+
 typeExpr(G, abs(A, Y), [TS | [T]]) :-
     typeArgs([], A, NG), % Cree le nouveau contexte en fonction des args
     extract_types(NG, TS), % Extraie les différents types des args pour le obtenir le type de retour
@@ -81,6 +87,10 @@ typeType(X) :-
 typeType(X) :-
     X = void.
 
+typeType(vec(X)):-
+    typeType(X).
+
+
 typeType(arrow(X, Y)) :-
     typeTypes(X),
     typeType(Y).
@@ -93,16 +103,20 @@ typeTypes(star(X, Y)) :-
     typeTypes(Y).
 
 
+compareTypes(X,Y) :- compare(=, X, Y).
+
+compareTypes(vec(free), vec(_)).
+
+
 % INSTRUCTION
 
 typeInst(G, echo(X), void) :-
     typeExpr(G, X, int).
 
-typeInst(G, set(Name, Expr), void) :-
+typeInst(G, set(Lval, Expr), void) :-
     typeExpr(G, Expr, EType),
-    assoc(Name, G, NType),
-    compare(=, EType, NType).
-
+    typeLval(G, Lval, NType),
+    compareTypes(EType, NType).
 
 typeInst(G, alternative(Cond, Block1, Block2), void) :-
     typeExpr(G, Cond, bool),
@@ -120,13 +134,19 @@ typeInst(G, call(Name, Exprs), void) :-
     compare(=, T, TE).
     
 
+% Left value
+typeLval(G, nth(V, I), T) :- typeLval(G, V, vec(T)), typeExpr(G, I, int).
+
+typeLval(G, X, T) :- string(X), typeExpr(G, X, T).
+
 
 % Declaration
 
 typeDec(G, const(Name, Type, Expr), NG) :-
     typeType(Type),
     convertTypeToProlog(Type, NType),
-    typeExpr(G, Expr, NType),
+    typeExpr(G, Expr, EType),
+    compareTypes(EType, NType),
     append([(Name, NType)], G, NG).
 
 typeDec(G, fun(Name, Type, Args, Expr), GP) :-

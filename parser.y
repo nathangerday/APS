@@ -83,7 +83,7 @@ type:
     INT { $$ = new AstType(Type.INT); } 
     | BOOL { $$ = new AstType(Type.BOOL); } 
     | VOID { $$ = new AstType(Type.VOID); }
-    | LPAR VEC type RPAR { $$ = new AstType(Type.VEC); }
+    | LPAR VEC type RPAR { $$ = new AstType(Type.VEC, (AstType)$3); }
     | LPAR types ARROW type RPAR { $$ = new AstArrow((Ast)$2, (Ast)$4); }
 ;
 

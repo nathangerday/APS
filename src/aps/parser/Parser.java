@@ -668,7 +668,7 @@ case 24:
 break;
 case 25:
 //#line 86 "parser.y"
-{ yyval.obj = new AstType(Type.VEC); }
+{ yyval.obj = new AstType(Type.VEC, (AstType)val_peek(1).obj); }
 break;
 case 26:
 //#line 87 "parser.y"
