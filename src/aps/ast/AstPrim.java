@@ -72,9 +72,6 @@ public class AstPrim implements IASTExpr {
                 
             case NTH:
                 MemoryBlock b = tmpval1.getB();
-                System.out.println(tmpval1.getA());
-                System.out.println(tmpval1.getB());
-                System.out.println(tmpval1.getN());
                 int indice = tmpval2.getN();
                 return mem.get(b.getAddress().getId()+indice);
             case LEN:
