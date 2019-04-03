@@ -14,16 +14,10 @@ public class AstSet implements IASTStat{
     }
 
     public Memory eval(Environment env, Memory mem) {
-        //TODO Change for APS2
-        // if(name instanceof AstIdent){
-        //     Address a;
-        //     if((a = env.get(((AstIdent)name).getString()).getA()) != null){
-        //         Memory newmem = new Memory(mem);
-        //         newmem.mutate(a, expr.eval(env, mem));
-        //         return newmem;
-        //     }
-        // }
+        Value v = expr.eval(env, mem);
+        Address a = name.evalleftval(env, mem);
+        mem.mutate(a, v);
 
-        return null;
+        return mem;
     }
 }

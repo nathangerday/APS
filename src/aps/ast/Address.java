@@ -9,6 +9,11 @@ public class Address{
         counter++;
     }
 
+    public Address(int i){
+        this.id = i;
+    }
+    
+
     public int getId(){
         return this.id;
     }

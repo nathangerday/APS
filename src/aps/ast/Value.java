@@ -6,6 +6,7 @@ public class Value{
     Address A;
     ProceduralClosure P;
     ProceduralClosureRec PR;
+    MemoryBlock B;
 
     public Value(Integer N){
         this.N = N;
@@ -14,6 +15,7 @@ public class Value{
         this.A = null;
         this.P = null;
         this.PR = null;
+        this.B = null;
     }
 
     public Value(Closure F){
@@ -23,6 +25,7 @@ public class Value{
         this.A = null;
         this.P = null;
         this.PR = null;
+        this.B = null;
     }
 
     public Value(ClosureRec FR){
@@ -32,6 +35,7 @@ public class Value{
         this.A = null;
         this.P = null;
         this.PR = null;
+        this.B = null;
     }
 
     public Value(Address A){
@@ -41,6 +45,7 @@ public class Value{
         this.A = A;
         this.P = null;
         this.PR = null;
+        this.B = null;
     }
 
     public Value(ProceduralClosure P){
@@ -50,6 +55,7 @@ public class Value{
         this.A = null;
         this.P = P;
         this.PR = null;
+        this.B = null;
     }
 
     public Value(ProceduralClosureRec PR){
@@ -59,6 +65,17 @@ public class Value{
         this.A = null;
         this.P = null;
         this.PR = PR;
+        this.B = null;
+    }
+
+    public Value(MemoryBlock B){
+        this.N = null;
+        this.F = null;
+        this.FR = null;
+        this.A = null;
+        this.P = null;
+        this.PR = null;
+        this.B = B;
     }
     
 
@@ -83,5 +100,8 @@ public class Value{
     }   
     public ProceduralClosureRec getPR(){
         return this.PR;
+    }
+    public MemoryBlock getB(){
+        return this.B;
     }
 }

@@ -31,4 +31,13 @@ public class AstIdent implements IASTExpr, IASTLval {
 
         return env.get(name);
     }
+
+    public Address evalleftval(Environment env, Memory mem){
+        Address a;
+        if((a = env.get(name).getA()) != null){
+            return a;
+        }else{
+            return env.get(name).getB().getAddress();
+        }
+    }
 }
