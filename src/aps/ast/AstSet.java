@@ -15,7 +15,7 @@ public class AstSet implements IASTStat{
 
     public Memory eval(Environment env, Memory mem) {
         Value v = expr.eval(env, mem);
-        Address a = name.evalleftval(env, mem);
+        Address a = name.evalleftval(env, mem).getA();
         mem.mutate(a, v);
 
         return mem;

@@ -1,4 +1,4 @@
 package aps.ast;
 public interface IASTLval extends Ast{
-    public Address evalleftval(Environment env, Memory mem);
+    public Value evalleftval(Environment env, Memory mem);
 }

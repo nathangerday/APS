@@ -19,10 +19,16 @@ public class AstNth implements IASTLval{
     }
 
     @Override
-    public Address evalleftval(Environment env, Memory mem) {
-        Address a = lval.evalleftval(env, mem);
+    public Value evalleftval(Environment env, Memory mem) {
+        Value val = lval.evalleftval(env, mem);
         int indice = expr.eval(env, mem).getN();
-        return new Address(indice + a.getId());
+
+
+        if(val.getB() != null){
+            return new Value(new Address(val.getB().getAddress().getId() + indice));
+        }else{ // On a une addresse
+            return new Value(new Address(mem.get(val.getA()).getB().getAddress().getId() + indice));
+        }
     }
 
 }
