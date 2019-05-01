@@ -1,0 +1,10 @@
+Inventer des regles de typages / évaluation + une syntaxe
+Dans le cadre de APS3
+
+Exemples : 
+- Tableau à 2 dimensions natifs
+- Liste (similaire à celle de ML)
+- match
+- affectation multipels => x, y = e1, e2 
+                           x, y = y, x  (pour échanger les valeurs de x et y)
+- break / continue
