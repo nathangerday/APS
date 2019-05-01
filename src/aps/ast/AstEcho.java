@@ -11,8 +11,9 @@ public class AstEcho implements IASTStat{
     }
 
     public Memory eval(Environment env, Memory mem) {
-        System.out.println(expr.eval(env, mem).getN());
-        return mem;
+        MemVal evaluated = expr.eval(env, mem);
+        System.out.println(evaluated.getVal().getN());
+        return evaluated.getMem();
     }
     
 }

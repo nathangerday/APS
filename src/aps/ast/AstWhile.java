@@ -15,11 +15,11 @@ public class AstWhile implements IASTStat{
 
     @Override
     public Memory eval(Environment env, Memory mem) {
-        Integer c = cond.eval(env, mem).getN();
-        if(c == 0){
-            return mem;
-        }else if(c == 1){
-            return this.eval(env, block.eval(env, mem));
+        MemVal evaluated = cond.eval(env, mem);
+        if(evaluated.getVal().getN() == 0){
+            return evaluated.getMem();
+        }else if(evaluated.getVal().getN() == 1){
+            return this.eval(env, block.eval(env, evaluated.getMem()));
         }
         return null;
     }

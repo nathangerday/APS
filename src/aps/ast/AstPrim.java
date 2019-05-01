@@ -17,65 +17,66 @@ public class AstPrim implements IASTExpr {
     }
 
 
-    public Value eval(Environment env, Memory mem){
-        ArrayList<Value> vals = exprs.eval(env,mem);
-        Value tmpval1;
-        Value tmpval2 = null;
+    public MemVal eval(Environment env, Memory mem){
+        ArrayList<MemVal> vals = exprs.eval(env,mem);
+        MemVal tmpval1;
+        MemVal tmpval2 = null;
         tmpval1 = vals.get(0);
         if(op != Op.NOT && op != Op.LEN && op != Op.ALLOC){ // Unary
             tmpval2 = vals.get(1);
         }
         switch(op){
             case ADD:
-                return new Value(tmpval1.getN()+tmpval2.getN());
+                return new MemVal(tmpval2.getMem(),  new Value(tmpval1.getVal().getN()+tmpval2.getVal().getN()));
             case SUB:
-                return new Value(tmpval1.getN()-tmpval2.getN());
+                return new MemVal(tmpval2.getMem(),  new Value(tmpval1.getVal().getN()-tmpval2.getVal().getN()));
             case MUL:
-                return new Value(tmpval1.getN()*tmpval2.getN());
+                return new MemVal(tmpval2.getMem(),  new Value(tmpval1.getVal().getN()*tmpval2.getVal().getN()));
             case DIV:
-                return new Value(tmpval1.getN()/tmpval2.getN());
+                return new MemVal(tmpval2.getMem(),  new Value(tmpval1.getVal().getN()/tmpval2.getVal().getN()));
             case NOT:
-                if(tmpval1.getN() == 1){
-                    return new Value(0);
+                if(tmpval1.getVal().getN() == 1){
+                    return new MemVal(tmpval1.getMem(), new Value(0));
                 }else{
-                    return new Value(1);
+                    return new MemVal(tmpval1.getMem(), new Value(1));
                 }
             case AND:
                 
-                if(tmpval1.getN() == 0){
-                    return new Value(0);
+                if(tmpval1.getVal().getN() == 0){
+                    return new MemVal(tmpval2.getMem(), new Value(0));
                 }else{
-                    return new Value(tmpval2.getN());
+                    return new MemVal(tmpval2.getMem(), new Value(tmpval2.getVal().getN()));
                 }
             case OR:
-                if(tmpval1.getN() == 1){
-                    return new Value(1);
+                if(tmpval1.getVal().getN() == 1){
+                    return new MemVal(tmpval2.getMem(), new Value(1));
                 }else{
-                    return new Value(tmpval2.getN());
+                    return new MemVal(tmpval2.getMem(), new Value(tmpval2.getVal().getN()));
                 }
             case EQ:
-                if(tmpval1.getN() == tmpval2.getN()){
-                    return new Value(1);
+                if(tmpval1.getVal().getN() == tmpval2.getVal().getN()){
+                    return new MemVal(tmpval2.getMem(), new Value(1));
                 }else{
-                    return new Value(0);
+                    return new MemVal(tmpval2.getMem(), new Value(0));
                 }
             case LT:
-                if(tmpval1.getN() < tmpval2.getN()){
-                    return new Value(1);
+                if(tmpval1.getVal().getN() < tmpval2.getVal().getN()){
+                    return new MemVal(tmpval2.getMem(), new Value(1));
                 }else{
-                    return new Value(0);
+                    return new MemVal(tmpval2.getMem(), new Value(0));
                 }
             case ALLOC:
-                int nb = tmpval1.getN();
-                Address beginMemBlock = mem.allocn(nb);
-                return new Value(new MemoryBlock(beginMemBlock, nb));
+                int nb = tmpval1.getVal().getN();
+                Memory toAllocateTo = tmpval1.getMem();
+                Address beginMemBlock = toAllocateTo.allocn(nb);
+                return new MemVal(toAllocateTo, new Value(new MemoryBlock(beginMemBlock, nb)));
                 
             case NTH:
-                MemoryBlock b = tmpval1.getB();
-                int indice = tmpval2.getN();
-                return mem.get(b.getAddress().getId()+indice);
+                MemoryBlock b = tmpval1.getVal().getB();
+                int indice = tmpval2.getVal().getN();
+                return new MemVal(tmpval2.getMem(), tmpval2.getMem().get(b.getAddress().getId()+indice));
             case LEN:
-                return new Value(tmpval1.getB().getSize());
+                return new MemVal(tmpval1.getMem(), new Value(tmpval1.getVal().getB().getSize()));
 
         }
         System.err.println("Undefined operation, should never see this message");

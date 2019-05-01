@@ -12,14 +12,14 @@ public class Closure{
         this.args = args;
     }
 
-    public Value eval(ArrayList<Value> valOfArgs, Memory mem){
+    public MemVal eval(ArrayList<MemVal> valOfArgs, Memory mem){
         Environment copyEnv = new Environment(env);
         if(args.size() != valOfArgs.size()){
             throw new RuntimeException("Different size in function application");
         }
 
         for(int i = 0; i<args.size(); i++){
-            copyEnv.add(args.get(i), valOfArgs.get(i));
+            copyEnv.add(args.get(i), valOfArgs.get(i).getVal());
         }
 
         return e.eval(copyEnv, mem);

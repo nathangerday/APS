@@ -8,7 +8,7 @@ for i in range(18):
     try:
         parsed = str(s.check_output(["java", "-cp", "bin/", "aps.parser.ToProlog", "Test/"+file], stderr=s.STDOUT ))
     except:
-        print("File probably not found or can't be opened : " + file)
+        print("Error on parsing (or file not found) : " + file)
         continue
 
     if "error" in str(parsed).lower():
@@ -31,7 +31,30 @@ for i in range(21):
     try:
         parsed = str(s.check_output(["java", "-cp", "bin/", "aps.parser.ToProlog", file], stderr=s.STDOUT ))
     except:
-        print("File probably not found or can't be opened : " + file)
+        print("Error on parsing (or file not found) : " + file)
+        continue
+
+    if "error" in str(parsed).lower():
+        print("Error when parsing")
+        continue
+
+
+    parsed = parsed[2:len(parsed)-3]
+
+    try:
+        parsed = str(s.check_output(["swipl", "-s", "Typage/prog.pl", parsed ], stderr=s.STDOUT ))
+        print("OK", flush=True)
+    except:
+        print("Error on type check")
+        continue
+
+for i in range(8):
+    file = "Test2/prog2"+str(i).zfill(2)+".aps"
+    print("Running test : " + file + " ... ", end='')
+    try:
+        parsed = str(s.check_output(["java", "-cp", "bin/", "aps.parser.ToProlog", file], stderr=s.STDOUT ))
+    except:
+        print("Error on parsing, this file does not respect the syntax (or file not found) : " + file)
         continue
 
     if "error" in str(parsed).lower():

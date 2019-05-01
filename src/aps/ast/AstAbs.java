@@ -12,8 +12,8 @@ public class AstAbs implements IASTExpr {
         return "abs(" + args.toPrologString() + "," + expr.toPrologString() + ")";
     }
 
-    public Value eval(Environment env, Memory mem){
+    public MemVal eval(Environment env, Memory mem){
         Closure c = new Closure(expr, env, args.getAll());
-        return new Value(c);
+        return new MemVal(mem, new Value(c));
     }
 }

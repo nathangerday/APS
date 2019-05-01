@@ -15,14 +15,14 @@ public class AstApp implements IASTExpr {
     }
 
 
-    public Value eval(Environment env, Memory mem){
-        Value fun = f.eval(env, mem);
-        ArrayList<Value> valOfArgs = args.eval(env, mem);
+    public MemVal eval(Environment env, Memory mem){
+        MemVal fun = f.eval(env, mem);
+        ArrayList<MemVal> valOfArgs = args.eval(env, fun.getMem());
 
-        if(fun.getF() != null){
-            return fun.getF().eval(valOfArgs, mem);
-        }else if(fun.getFR() != null){
-            return fun.getFR().getClosure(fun).eval(valOfArgs, mem);
+        if(fun.getVal().getF() != null){
+            return fun.getVal().getF().eval(valOfArgs, valOfArgs.get(valOfArgs.size() - 1).getMem());
+        }else if(fun.getVal().getFR() != null){
+            return fun.getVal().getFR().getClosure(fun.getVal()).eval(valOfArgs, valOfArgs.get(valOfArgs.size() - 1).getMem());
         }
 
         return null;

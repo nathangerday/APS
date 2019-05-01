@@ -5,7 +5,7 @@ public class AstFalse implements IASTExpr {
         return "false";
     }
 
-    public Value eval(Environment env, Memory mem){
-        return new Value(0);
+    public MemVal eval(Environment env, Memory mem){
+        return new MemVal(mem, new Value(0));
     }
 }

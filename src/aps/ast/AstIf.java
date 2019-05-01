@@ -14,12 +14,13 @@ public class AstIf implements IASTExpr {
         return "if(" + cond.toPrologString() + "," + then.toPrologString() + "," + e.toPrologString() + ")";
     }
 
-    public Value eval(Environment env, Memory mem){
-        Integer c = cond.eval(env, mem).getN();
+    public MemVal eval(Environment env, Memory mem){
+        MemVal evaluated = cond.eval(env, mem);
+        Integer c = evaluated.getVal().getN();
         if(c == 1){
-            return then.eval(env, mem);
+            return then.eval(env, evaluated.getMem());
         }else if(c == 0){
-            return e.eval(env, mem);
+            return e.eval(env, evaluated.getMem());
         }
         return null;
     }

@@ -1,8 +1,6 @@
 package aps.ast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Memory{
     // private Map<Address, Value> memory;

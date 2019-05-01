@@ -17,28 +17,22 @@ public class AstIdent implements IASTExpr, IASTLval {
     }
 
 
-    public Value eval(Environment env, Memory mem){
+    public MemVal eval(Environment env, Memory mem){
         Address a;
         if((a = env.get(name).getA()) != null){
             Value v = mem.get(a);
             if(v != null && v.getN() != null){
-                return v;
+                return new MemVal(mem, v);
             }
 
             //If not initialized or not an N, error
             throw new RuntimeException("Error, bad value in : "+this.name);
         }
 
-        return env.get(name);
+        return new MemVal(mem, env.get(name));
     }
 
-    public Value evalleftval(Environment env, Memory mem){
-        Address a;
-        return env.get(name);
-        // if((a = env.get(name).getA()) != null){
-        //     return env.get(name);
-        // }else{
-        //     return new Value(env.get(name).getB().getAddress());
-        // }
+    public MemVal evalleftval(Environment env, Memory mem){
+        return new MemVal(mem, env.get(name));
     }
 }

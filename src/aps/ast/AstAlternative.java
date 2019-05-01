@@ -17,11 +17,12 @@ public class AstAlternative implements IASTStat{
 
     @Override
     public Memory eval(Environment env, Memory mem) {
-        Integer c = cond.eval(env, mem).getN();
+        MemVal evaluated = cond.eval(env, mem);
+        Integer c = evaluated.getVal().getN();
         if(c == 1){
-            return b1.eval(env, mem);
+            return b1.eval(env, evaluated.getMem());
         }else if(c == 0){
-            return b2.eval(env, mem);
+            return b2.eval(env, evaluated.getMem());
         }
         return null;
     }

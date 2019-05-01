@@ -13,7 +13,7 @@ public class ProceduralClosure{
         this.args = args;
 	}
     
-    public Memory eval(ArrayList<Value> valOfArgs, Memory mem){
+    public Memory eval(ArrayList<MemVal> valOfArgs, Memory mem){
         Environment copyEnv = new Environment(env);
 
         if(args.size() != valOfArgs.size()){
@@ -22,7 +22,7 @@ public class ProceduralClosure{
 
 
         for(int i = 0; i<args.size(); i++){
-            copyEnv.add(args.get(i), valOfArgs.get(i));
+            copyEnv.add(args.get(i), valOfArgs.get(i).getVal());
         }
 
         return block.eval(copyEnv, mem);

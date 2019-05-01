@@ -30,10 +30,13 @@ public class AstExprs implements Ast {
 
     }
   
-    public ArrayList<Value> eval(Environment env, Memory mem){
-        ArrayList<Value> res = new ArrayList<>();
+    public ArrayList<MemVal> eval(Environment env, Memory mem){
+        ArrayList<MemVal> res = new ArrayList<>();
+        Memory curMem = mem;
         for(IASTExpr e : exprs){
-            res.add(e.eval(env, mem));
+            MemVal evaluated = e.eval(env, curMem);
+            curMem = evaluated.getMem();
+            res.add(evaluated);
         }
         return res;
     }
